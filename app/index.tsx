@@ -14,11 +14,12 @@ import { useTheme } from '../src/theme';
 import type { FeedItem } from '../src/types/feed';
 import { fonts } from '../src/fonts';
 import { ArticleCard } from './components/ArticleCard';
+import { Navbar } from './components/Navbar';
 
 const PROFILE = DEFAULT_USER_PROFILES[3]; // "2 Teams (Popular)"
 
 export default function FeedScreen() {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const { items, loading, loadingMore, error, endOfFeed, loadMore } = useFeed({
     teamIds: PROFILE.team_ids,
   });
@@ -55,6 +56,7 @@ export default function FeedScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.surface.primary }]}>
+      <Navbar colors={colors} isDark={isDark} />
       {loading ? (
         <View style={styles.center}>
           <ActivityIndicator size="large" color={colors.text.primary} />
