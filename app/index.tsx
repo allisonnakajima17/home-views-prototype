@@ -7,19 +7,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFeed } from '../src/hooks/useFeed';
 import { DEFAULT_USER_PROFILES } from '../src/lib/feedApi';
 import { useTheme } from '../src/theme';
 import type { FeedItem } from '../src/types/feed';
 import { fonts } from '../src/fonts';
 import { ArticleCard } from './components/ArticleCard';
-import { Navbar } from './components/Navbar';
 
 const PROFILE = DEFAULT_USER_PROFILES[3]; // "2 Teams (Popular)"
 
 export default function FeedScreen() {
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
   const { items, loading, loadingMore, error, endOfFeed, loadMore } = useFeed({
     teamIds: PROFILE.team_ids,
   });
@@ -55,8 +53,7 @@ export default function FeedScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.surface.primary }]}>
-      <Navbar colors={colors} isDark={isDark} />
+    <View style={[styles.container, { backgroundColor: colors.surface.primary }]}>
       {loading ? (
         <View style={styles.center}>
           <ActivityIndicator size="large" color={colors.text.primary} />
@@ -83,9 +80,10 @@ export default function FeedScreen() {
           onEndReached={loadMore}
           onEndReachedThreshold={0.3}
           ListFooterComponent={ListFooter}
+          contentInsetAdjustmentBehavior="automatic"
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -1,15 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
+import Svg, { Line } from 'react-native-svg';
 import type { ThemeColors } from '../../src/theme';
 import { fonts } from '../../src/fonts';
 
-interface NavbarProps {
-  colors: ThemeColors;
-  isDark: boolean;
-}
-
-// Read from exported Figma asset; fill="black" is swapped for dark mode
 const CBS_LOGO_SVG = `<svg width="121" height="14" viewBox="0 0 121 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_17998_11128)">
 <path d="M14 6.99003C14 8.92902 13.3167 10.5833 11.95 11.95C10.5833 13.3167 8.93756 14 7.00997 14C5.08237 14 3.43095 13.3167 2.05857 11.95C0.686191 10.5833 0 8.93187 0 6.99003C0 5.06244 0.686191 3.41672 2.05857 2.05003C3.43095 0.683343 5.08237 0 7.00997 0C8.93756 0 10.5833 0.683343 11.95 2.05003C13.3167 3.41672 14 5.06244 14 6.99003ZM13.5786 7.00142C13.0291 5.79134 12.1806 4.80618 11.0303 4.04881C9.82306 3.2288 8.47915 2.81879 7.00142 2.81879C5.52369 2.81879 4.17409 3.2288 2.94977 4.04881C1.81371 4.80618 0.970917 5.79134 0.421395 7.00142C0.970917 8.21151 1.81371 9.20236 2.94977 9.97397C4.17124 10.7797 5.52085 11.1841 7.00142 11.1841C8.482 11.1841 9.82306 10.7797 11.0332 9.97397C12.1806 9.20236 13.0291 8.21151 13.5786 7.00142ZM10.7256 6.99003C10.7256 8.01505 10.3612 8.88916 9.63799 9.61521C8.91194 10.3413 8.03783 10.7029 7.01281 10.7029C5.9878 10.7029 5.11369 10.3413 4.38763 9.61521C3.66158 8.88916 3.29998 8.01505 3.29998 6.99003C3.29998 5.96502 3.66158 5.09376 4.38763 4.3734C5.11369 3.65304 5.9878 3.29429 7.01281 3.29429C8.03783 3.29429 8.91194 3.65304 9.63799 4.3734C10.3612 5.09376 10.7256 5.96502 10.7256 6.99003Z" fill="black"/>
@@ -35,56 +30,54 @@ function getLogoSvg(isDark: boolean): string {
   return CBS_LOGO_SVG.replace(/fill="black"/g, 'fill="white"');
 }
 
+function PlusIcon({ color }: { color: string }) {
+  const size = 10;
+  const center = size / 2;
+  const arm = 3.5;
+  return (
+    <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      <Line x1={center} y1={center - arm} x2={center} y2={center + arm} stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Line x1={center - arm} y1={center} x2={center + arm} y2={center} stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
 function PlusCircle({ colors }: { colors: ThemeColors }) {
   return (
     <View style={[styles.teamCircle, { backgroundColor: colors.surface.primary, borderColor: colors.surface.tertiary }]}>
-      <Text style={[styles.plusIcon, { color: colors.text.secondary }]}>+</Text>
+      <PlusIcon color={colors.text.secondary} />
     </View>
   );
 }
 
-function MenuButton({ colors, isDark }: { colors: ThemeColors; isDark: boolean }) {
+export function HeaderLogo({ isDark }: { isDark: boolean }) {
+  return <SvgXml xml={getLogoSvg(isDark)} width={120} height={14} />;
+}
+
+export function HeaderMenuButton({ colors }: { colors: ThemeColors }) {
   return (
-    <View style={[styles.menuPill, { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }]}>
+    <View style={styles.menuPill}>
       <Text style={[styles.menuText, { color: colors.text.primary }]}>Menu</Text>
-      <View style={styles.teamIcons}>
-        <PlusCircle colors={colors} />
-        <PlusCircle colors={colors} />
-        <PlusCircle colors={colors} />
-      </View>
-    </View>
-  );
-}
-
-export function Navbar({ colors, isDark }: NavbarProps) {
-  return (
-    <View style={styles.navbar}>
-      <SvgXml xml={getLogoSvg(isDark)} width={120} height={14} />
-      <MenuButton colors={colors} isDark={isDark} />
+      <PlusCircle colors={colors} />
+      <PlusCircle colors={colors} />
+      <PlusCircle colors={colors} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  navbar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-
   menuPill: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 8,
     borderRadius: 9999,
-    gap: 4,
+    gap: 2,
   },
   menuText: {
     fontFamily: fonts.demiBold,
     fontSize: 16,
-    lineHeight: 16,
+    marginStart: 2,
+    transform: [{ translateY: -1 }],
   },
   teamIcons: {
     flexDirection: 'row',
@@ -92,18 +85,12 @@ const styles = StyleSheet.create({
     paddingEnd: 4,
   },
   teamCircle: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
     borderRadius: 50,
     borderWidth: 1.875,
     alignItems: 'center',
     justifyContent: 'center',
-    marginEnd: -4,
-  },
-  plusIcon: {
-    fontSize: 10,
-    fontWeight: '700',
-    lineHeight: 12,
-    marginTop: -1,
+    marginEnd: -6,
   },
 });
