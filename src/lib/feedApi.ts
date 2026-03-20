@@ -436,7 +436,7 @@ export async function fetchRecommendations({
 }): Promise<RecommenderResponse> {
   const isInitialLoad = !nextToken;
   const query = isInitialLoad ? RECOMMENDER_QUERIES.INIT : RECOMMENDER_QUERIES.NEXT;
-  const userId = getUserId();
+  const userId = await getUserId();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let variables: Record<string, any>;
@@ -466,7 +466,7 @@ export async function fetchRecommendations({
     };
   }
 
-  const response = await fetch('/api/graphql', {
+  const response = await fetch('https://ideally-present-locust.edgecompute.app', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query, variables, operationName: 'UserRecommendedContent' }),
@@ -540,9 +540,13 @@ export async function fetchContent({
   const query = buildContentQuery(items);
   if (!query) return [];
 
-  const response = await fetch('/api/cms-graphql', {
+  const response = await fetch('https://helios.cbssports.com/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'User-Agent': 'dopamine-feed-ui/1.0',
+    },
     body: JSON.stringify({ query, operationName: 'RetrievePersonalizedContent' }),
     signal,
   });

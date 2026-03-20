@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "Home Views Prototype",
+    "slug": "home-views-prototype",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "home-views-prototype",
+    "platforms": [
+      "ios"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.cbssports.homeviewsprototype",
+      "supportsTablet": false
+    },
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-asset",
+      "expo-font"
+    ]
+  }
+}

@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Expo
+.expo/
+ios/
+android/
+web-build/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
