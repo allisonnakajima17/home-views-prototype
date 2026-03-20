@@ -12,6 +12,7 @@ import { useFeed } from '../src/hooks/useFeed';
 import { DEFAULT_USER_PROFILES } from '../src/lib/feedApi';
 import { useTheme } from '../src/theme';
 import type { FeedItem } from '../src/types/feed';
+import { fonts } from '../src/fonts';
 import { ArticleCard } from './components/ArticleCard';
 
 const PROFILE = DEFAULT_USER_PROFILES[3]; // "2 Teams (Popular)"
@@ -96,10 +97,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   loadingText: {
+    fontFamily: fonts.regular,
     marginTop: 12,
     fontSize: 16,
   },
   errorText: {
+    fontFamily: fonts.regular,
     fontSize: 16,
     textAlign: 'center',
     paddingHorizontal: 20,
@@ -111,8 +114,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   retryText: {
+    fontFamily: fonts.demiBold,
     fontSize: 14,
-    fontWeight: '600',
   },
   footer: {
     alignItems: 'center',
@@ -120,6 +123,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   footerText: {
+    fontFamily: fonts.regular,
     fontSize: 13,
   },
 });

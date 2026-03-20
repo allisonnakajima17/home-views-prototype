@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import type { FeedItem } from '../../src/types/feed';
 import type { ThemeColors } from '../../src/theme';
+import { fonts } from '../../src/fonts';
 import { relativeTime } from '../../src/utils/timeFormat';
 import { getLeagueTheme } from '../../src/utils/leagueTheme';
 
@@ -114,16 +115,16 @@ const styles = StyleSheet.create({
   },
   logoText: {
     color: '#fff',
+    fontFamily: fonts.bold,
     fontSize: 10,
-    fontWeight: '800',
     letterSpacing: 0.5,
   },
   metadataText: {
     justifyContent: 'center',
   },
   leagueName: {
+    fontFamily: fonts.demiBold,
     fontSize: 16,
-    fontWeight: '600',
     lineHeight: 16,
   },
   timestampWrap: {
@@ -131,6 +132,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   timestamp: {
+    fontFamily: fonts.regular,
     fontSize: 14,
     lineHeight: 14,
   },
@@ -152,14 +154,14 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   headline: {
+    fontFamily: fonts.bold,
     fontSize: 20,
-    fontWeight: '700',
     letterSpacing: -0.4,
     lineHeight: 24,
   },
   dek: {
+    fontFamily: fonts.regular,
     fontSize: 16,
-    fontWeight: '400',
     letterSpacing: -0.16,
     lineHeight: 22.4,
   },
@@ -184,8 +186,8 @@ const styles = StyleSheet.create({
   },
   liveBadgeText: {
     color: '#fff',
+    fontFamily: fonts.bold,
     fontSize: 12,
-    fontWeight: '700',
     lineHeight: 12,
   },
 });
