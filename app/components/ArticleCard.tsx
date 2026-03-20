@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
 
   articleBody: {
-    gap: 8,
+    gap: 12,
   },
   textBlock: {
     gap: 2,
