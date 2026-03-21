@@ -14,11 +14,12 @@ import { useTheme } from '../src/theme';
 import type { FeedItem } from '../src/types/feed';
 import { fonts } from '../src/fonts';
 import { ArticleCard } from './components/ArticleCard';
+import { HomeViews } from './components/HomeViews';
 
 const PROFILE = DEFAULT_USER_PROFILES[3]; // "2 Teams (Popular)"
 
 export default function FeedScreen() {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const { items, loading, loadingMore, error, endOfFeed, loadMore } = useFeed({
     teamIds: PROFILE.team_ids,
   });
@@ -86,6 +87,7 @@ export default function FeedScreen() {
           keyExtractor={keyExtractor}
           onEndReached={loadMore}
           onEndReachedThreshold={0.3}
+          ListHeaderComponent={<HomeViews colors={colors} isDark={isDark} />}
           ListFooterComponent={ListFooter}
           contentInsetAdjustmentBehavior="automatic"
           onScroll={onScroll}
