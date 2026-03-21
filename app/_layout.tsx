@@ -5,7 +5,9 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useTheme } from '../src/theme';
-import { HeaderLogo, HeaderMenuButton } from './components/Navbar';
+import { HeaderBackground } from './components/HeaderBackground';
+import { HeaderLogo } from './components/HeaderLogo';
+import { HeaderMenuButton } from './components/Navbar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,8 +38,8 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           headerTransparent: true,
-          headerBlurEffect: isDark ? 'dark' : 'light',
           headerShadowVisible: false,
+          headerBackground: () => <HeaderBackground isDark={isDark} />,
           headerTitle: () => <HeaderLogo isDark={isDark} />,
           headerRight: () => <HeaderMenuButton colors={colors} />,
           headerLeft: () => null,

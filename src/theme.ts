@@ -40,7 +40,7 @@ const dark: ThemeColors = {
   surface: {
     primary: '#000000',
     card: '#000000',
-    tertiary: 'rgba(255,255,255,0.1)',
+    tertiary: '#1a1a1a',
   },
   text: {
     primary: '#ffffff',

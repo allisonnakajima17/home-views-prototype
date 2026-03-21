@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   ActivityIndicator,
-  FlatList,
+  Animated,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useScrollOffset } from '../src/ScrollOffsetContext';
 import { useFeed } from '../src/hooks/useFeed';
 import { DEFAULT_USER_PROFILES } from '../src/lib/feedApi';
 import { useTheme } from '../src/theme';
@@ -21,6 +22,12 @@ export default function FeedScreen() {
   const { items, loading, loadingMore, error, endOfFeed, loadMore } = useFeed({
     teamIds: PROFILE.team_ids,
   });
+
+  const scrollY = useScrollOffset();
+  const onScroll = useMemo(
+    () => Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true }),
+    [scrollY],
+  );
 
   const renderItem = ({ item }: { item: FeedItem }) => (
     <ArticleCard item={item} colors={colors} />
@@ -73,7 +80,7 @@ export default function FeedScreen() {
           </TouchableOpacity>
         </View>
       ) : (
-        <FlatList
+        <Animated.FlatList
           data={items}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
@@ -81,6 +88,8 @@ export default function FeedScreen() {
           onEndReachedThreshold={0.3}
           ListFooterComponent={ListFooter}
           contentInsetAdjustmentBehavior="automatic"
+          onScroll={onScroll}
+          scrollEventThrottle={16}
         />
       )}
     </View>
