@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import PagerView from 'react-native-pager-view';
+import * as Haptics from 'expo-haptics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useScrollOffset } from '../src/ScrollOffsetContext';
 import { useFeed } from '../src/hooks/useFeed';
@@ -90,13 +92,14 @@ export default function FeedScreen() {
     [scrollY, handleScrollDirection],
   );
 
+  const pagerRef = useRef<PagerView>(null);
+
   const filteredItems = useMemo(
     () => items.filter(i => !i.__typename?.startsWith('CMSSocial')),
     [items],
   );
 
-  const displayItems = useMemo(() => {
-    if (selectedView !== 2) return filteredItems;
+  const trendingItems = useMemo(() => {
     const shuffled = [...filteredItems];
     let seed = 42;
     const rand = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
@@ -105,11 +108,28 @@ export default function FeedScreen() {
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
-  }, [items, selectedView]);
+  }, [filteredItems]);
 
-  const renderItem = ({ item }: { item: FeedItem }) => (
-    <ArticleCard item={item} colors={colors} isTrending={selectedView === 2} />
-  );
+  const handleSelectView = useCallback((index: number) => {
+    setSelectedView(index);
+    pagerRef.current?.setPage(index);
+  }, []);
+
+  const handlePageSelected = useCallback((e: { nativeEvent: { position: number } }) => {
+    const page = e.nativeEvent.position;
+    if (page !== selectedView) {
+      Haptics.selectionAsync();
+      setSelectedView(page);
+    }
+  }, [selectedView]);
+
+  const renderForYouItem = useCallback(({ item }: { item: FeedItem }) => (
+    <ArticleCard item={item} colors={colors} isTrending={false} />
+  ), [colors]);
+
+  const renderTrendingItem = useCallback(({ item }: { item: FeedItem }) => (
+    <ArticleCard item={item} colors={colors} isTrending={true} />
+  ), [colors]);
 
   const keyExtractor = (item: FeedItem, index: number) =>
     item.content_id ?? String(index);
@@ -159,35 +179,59 @@ export default function FeedScreen() {
         </View>
       ) : (
         <>
-          {selectedView === 1 ? (
-            <Animated.ScrollView
-              contentContainerStyle={{
-                paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT + 16,
-              }}
-              onScroll={onScroll}
-              scrollEventThrottle={16}
-            >
-              <Image
-                source={followingScreenshot}
-                style={styles.followingImage}
-                resizeMode="contain"
+          <PagerView
+            ref={pagerRef}
+            style={styles.pager}
+            initialPage={0}
+            onPageSelected={handlePageSelected}
+            overdrag={false}
+          >
+            <View key="0" style={styles.page}>
+              <Animated.FlatList
+                data={filteredItems}
+                renderItem={renderForYouItem}
+                keyExtractor={keyExtractor}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.3}
+                ListFooterComponent={ListFooter}
+                contentContainerStyle={{
+                  paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT,
+                }}
+                onScroll={onScroll}
+                scrollEventThrottle={16}
               />
-            </Animated.ScrollView>
-          ) : (
-            <Animated.FlatList
-              data={displayItems}
-              renderItem={renderItem}
-              keyExtractor={keyExtractor}
-              onEndReached={loadMore}
-              onEndReachedThreshold={0.3}
-              ListFooterComponent={ListFooter}
-              contentContainerStyle={{
-                paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT,
-              }}
-              onScroll={onScroll}
-              scrollEventThrottle={16}
-            />
-          )}
+            </View>
+            <View key="1" style={styles.page}>
+              <Animated.ScrollView
+                contentContainerStyle={{
+                  paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT + 16,
+                }}
+                onScroll={onScroll}
+                scrollEventThrottle={16}
+              >
+                <Image
+                  source={followingScreenshot}
+                  style={styles.followingImage}
+                  resizeMode="contain"
+                />
+              </Animated.ScrollView>
+            </View>
+            <View key="2" style={styles.page}>
+              <Animated.FlatList
+                data={trendingItems}
+                renderItem={renderTrendingItem}
+                keyExtractor={keyExtractor}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.3}
+                ListFooterComponent={ListFooter}
+                contentContainerStyle={{
+                  paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT,
+                }}
+                onScroll={onScroll}
+                scrollEventThrottle={16}
+              />
+            </View>
+          </PagerView>
           <CustomHeader
             insets={insets}
             colors={colors}
@@ -195,7 +239,7 @@ export default function FeedScreen() {
             pillsVisible={pillsVisible}
             scrollY={scrollY}
             selectedView={selectedView}
-            onSelectView={setSelectedView}
+            onSelectView={handleSelectView}
           />
         </>
       )}
@@ -205,6 +249,12 @@ export default function FeedScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  pager: {
+    flex: 1,
+  },
+  page: {
     flex: 1,
   },
   center: {
