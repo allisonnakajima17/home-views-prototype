@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, Easing, Image, StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import type { FeedItem } from '../../src/types/feed';
 import type { ThemeColors } from '../../src/theme';
@@ -24,10 +24,111 @@ function EyeIcon({ color }: { color: string }) {
   );
 }
 
-function fakeViewCount(id: string | undefined): string {
-  const seed = (id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  const count = 800 + (seed * 137) % 9200;
-  return count.toLocaleString();
+function seedFromId(id: string | undefined): number {
+  return (id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+}
+
+function initialCount(id: string | undefined): number {
+  const seed = seedFromId(id);
+  return 800 + (seed * 137) % 9200;
+}
+
+function initialDelay(id: string | undefined): number {
+  const seed = seedFromId(id);
+  return 1000 + (seed * 43) % 4000;
+}
+
+function randomInterval(): number {
+  return 3000 + Math.random() * 5000;
+}
+
+const DIGIT_HEIGHT = 20;
+const ROLL_DURATION = 300;
+const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+
+function RollingDigit({ digit, color }: { digit: number; color: string }) {
+  const anim = useRef(new Animated.Value(-digit * DIGIT_HEIGHT)).current;
+  const prevDigit = useRef(digit);
+
+  useEffect(() => {
+    if (digit !== prevDigit.current) {
+      prevDigit.current = digit;
+      Animated.timing(anim, {
+        toValue: -digit * DIGIT_HEIGHT,
+        duration: ROLL_DURATION,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [digit, anim]);
+
+  return (
+    <View style={styles.digitClip}>
+      <Animated.View style={{ transform: [{ translateY: anim }] }}>
+        {DIGITS.map(d => (
+          <Text key={d} style={[styles.digitChar, { color }]}>
+            {d}
+          </Text>
+        ))}
+      </Animated.View>
+    </View>
+  );
+}
+
+function RollingNumber({ value, color }: { value: number; color: string }) {
+  const formatted = useMemo(() => value.toLocaleString(), [value]);
+  const chars = useMemo(() => formatted.split(''), [formatted]);
+
+  return (
+    <View style={styles.rollingRow}>
+      {chars.map((ch, i) => {
+        const key = formatted.length - i;
+        const parsed = parseInt(ch, 10);
+        if (!isNaN(parsed)) {
+          return <RollingDigit key={key} digit={parsed} color={color} />;
+        }
+        return (
+          <Text key={`sep-${key}`} style={[styles.digitChar, { color }]}>
+            {ch}
+          </Text>
+        );
+      })}
+    </View>
+  );
+}
+
+function useLiveCount(id: string | undefined, active: boolean) {
+  const [count, setCount] = useState(() => initialCount(id));
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  const bump = useCallback(() => {
+    setCount(c => c + Math.ceil(Math.random() * 12));
+  }, []);
+
+  const scheduleNext = useCallback(() => {
+    timerRef.current = setTimeout(() => {
+      bump();
+      scheduleNext();
+    }, randomInterval());
+  }, [bump]);
+
+  useEffect(() => {
+    if (!active) {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      return;
+    }
+
+    timerRef.current = setTimeout(() => {
+      bump();
+      scheduleNext();
+    }, initialDelay(id));
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [active, id, bump, scheduleNext]);
+
+  return count;
 }
 
 function LeagueLogo({ topicName }: { topicName: string | undefined | null }) {
@@ -48,6 +149,8 @@ export function ArticleCard({ item, colors, isTrending }: ArticleCardProps) {
   const timestamp = relativeTime(item.displayPublishedAt || item.displayUpdatedAt);
   const topicName = item.primaryTopic?.name;
   const isLive = item.__typename === 'CMSLiveBlog';
+
+  const count = useLiveCount(item.content_id, !!isTrending);
 
   return (
     <View style={[styles.card, { backgroundColor: colors.surface.card, borderBottomColor: colors.border }]}>
@@ -71,9 +174,7 @@ export function ArticleCard({ item, colors, isTrending }: ArticleCardProps) {
         {isTrending ? (
           <View style={styles.viewCount}>
             <EyeIcon color="#04802D" />
-            <Text style={[styles.viewCountText, { color: colors.text.primary }]}>
-              {fakeViewCount(item.content_id)}
-            </Text>
+            <RollingNumber value={count} color={colors.text.primary} />
           </View>
         ) : null}
         <View style={styles.overflow}>
@@ -169,10 +270,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
   },
-  viewCountText: {
+  rollingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  digitClip: {
+    height: DIGIT_HEIGHT,
+    overflow: 'hidden',
+  },
+  digitChar: {
     fontFamily: fonts.medium,
     fontSize: 16,
-    lineHeight: 20,
+    fontVariant: ['tabular-nums'],
+    height: DIGIT_HEIGHT,
+    lineHeight: DIGIT_HEIGHT,
+    textAlign: 'center',
   },
   overflow: {
     width: 24,

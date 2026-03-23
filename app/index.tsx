@@ -87,6 +87,23 @@ export default function FeedScreen() {
     [scrollY, handleScrollDirection],
   );
 
+  const filteredItems = useMemo(
+    () => items.filter(i => !i.__typename?.startsWith('CMSSocial')),
+    [items],
+  );
+
+  const displayItems = useMemo(() => {
+    if (selectedView !== 2) return filteredItems;
+    const shuffled = [...filteredItems];
+    let seed = 42;
+    const rand = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }, [items, selectedView]);
+
   const renderItem = ({ item }: { item: FeedItem }) => (
     <ArticleCard item={item} colors={colors} isTrending={selectedView === 2} />
   );
@@ -140,7 +157,7 @@ export default function FeedScreen() {
       ) : (
         <>
           <Animated.FlatList
-            data={items}
+            data={displayItems}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
             onEndReached={loadMore}
