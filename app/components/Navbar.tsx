@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Line } from 'react-native-svg';
 import type { ThemeColors } from '../../src/theme';
 import { fonts } from '../../src/fonts';
 
 function PlusIcon({ color }: { color: string }) {
-  const size = 10;
+  const size = 12;
   const center = size / 2;
-  const arm = 3.5;
+  const arm = 4;
   return (
     <Svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       <Line x1={center} y1={center - arm} x2={center} y2={center + arm} stroke={color} strokeWidth={1.5} strokeLinecap="round" />
@@ -16,9 +16,9 @@ function PlusIcon({ color }: { color: string }) {
   );
 }
 
-function PlusCircle({ colors, zIndex }: { colors: ThemeColors; zIndex: number }) {
+function PlusCircle({ colors, zIndex, isLast }: { colors: ThemeColors; zIndex: number; isLast?: boolean }) {
   return (
-    <View style={[styles.teamCircle, { backgroundColor: colors.surface.tertiary, zIndex }]}>
+    <View style={[styles.teamCircle, !isLast && styles.teamCircleOverlap, { backgroundColor: colors.surface.tertiary, borderColor: colors.surface.primary, zIndex }]}>
       <PlusIcon color={colors.text.secondary} />
     </View>
   );
@@ -26,12 +26,12 @@ function PlusCircle({ colors, zIndex }: { colors: ThemeColors; zIndex: number })
 
 export function HeaderMenuButton({ colors }: { colors: ThemeColors }) {
   return (
-    <View style={styles.menuPill}>
+    <Pressable style={styles.menuPill}>
       <Text style={[styles.menuText, { color: colors.text.primary }]}>Menu</Text>
       <PlusCircle colors={colors} zIndex={3} />
       <PlusCircle colors={colors} zIndex={2} />
-      <PlusCircle colors={colors} zIndex={1} />
-    </View>
+      <PlusCircle colors={colors} zIndex={1} isLast />
+    </Pressable>
   );
 }
 
@@ -40,27 +40,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 8,
-    paddingTop: 7,
-    paddingBottom: 9,
-    borderRadius: 9999,
-    gap: 0,
   },
   menuText: {
     fontFamily: fonts.demiBold,
-    fontSize: 16,
+    fontSize: 14,
     marginEnd: 4,
   },
   teamCircle: {
     width: 24,
     height: 24,
-    borderRadius: 50,
+    borderRadius: 12,
+    borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  teamCircleOverlap: {
     marginEnd: -4,
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 0 },
-    shadowOpacity: 0.15,
-    shadowRadius: 2,
-    elevation: 2,
   },
 });

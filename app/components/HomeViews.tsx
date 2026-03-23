@@ -5,9 +5,9 @@ import type { ThemeColors } from '../../src/theme';
 import { fonts } from '../../src/fonts';
 
 const LABELS = ['For you', 'Following', 'Trending'];
-const COLLAPSE_DISTANCE = 30;
+const COLLAPSE_DISTANCE = 20;
 
-export const HOME_VIEWS_HEIGHT = 84;
+export const HOME_VIEWS_HEIGHT = 52;
 
 export function HomeViews({ colors, isDark }: { colors: ThemeColors; isDark: boolean }) {
   const [selected, setSelected] = useState(0);
@@ -27,7 +27,7 @@ export function HomeViews({ colors, isDark }: { colors: ThemeColors; isDark: boo
 
   const translateY = scrollY.interpolate({
     inputRange: [0, COLLAPSE_DISTANCE],
-    outputRange: [0, -10],
+    outputRange: [0, -4],
     extrapolate: 'clamp',
   });
 
@@ -77,18 +77,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     paddingHorizontal: 16,
-    paddingVertical: 20,
+    paddingTop: 12,
+    paddingBottom: 8,
   },
   pill: {
     borderRadius: 100,
-    paddingVertical: 12,
+    paddingVertical: 8,
     paddingHorizontal: 12,
     overflow: 'hidden',
   },
   label: {
     fontFamily: fonts.demiBold,
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: 14,
+    lineHeight: 16,
     textAlign: 'center',
   },
 });
