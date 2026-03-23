@@ -13,6 +13,7 @@ export default function RootLayout() {
 
   const [fontsLoaded] = useFonts({
     'TTNormsPro-Regular': require('../assets/fonts/TTNormsPro-Regular.otf'),
+    'TTNormsPro-Medium': require('../assets/fonts/TTNormsPro-Medium.otf'),
     'TTNormsPro-DemiBold': require('../assets/fonts/TTNormsPro-DemiBold.otf'),
     'TTNormsPro-Bold': require('../assets/fonts/TTNormsPro-Bold.otf'),
   });

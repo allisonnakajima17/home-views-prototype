@@ -88,7 +88,7 @@ export default function FeedScreen() {
   );
 
   const renderItem = ({ item }: { item: FeedItem }) => (
-    <ArticleCard item={item} colors={colors} />
+    <ArticleCard item={item} colors={colors} isTrending={selectedView === 2} />
   );
 
   const keyExtractor = (item: FeedItem, index: number) =>

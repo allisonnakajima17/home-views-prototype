@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import type { FeedItem } from '../../src/types/feed';
 import type { ThemeColors } from '../../src/theme';
 import { fonts } from '../../src/fonts';
@@ -9,6 +10,24 @@ import { getLeagueTheme } from '../../src/utils/leagueTheme';
 interface ArticleCardProps {
   item: FeedItem;
   colors: ThemeColors;
+  isTrending?: boolean;
+}
+
+function EyeIcon({ color }: { color: string }) {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Zm0 12.5a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}
+
+function fakeViewCount(id: string | undefined): string {
+  const seed = (id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const count = 800 + (seed * 137) % 9200;
+  return count.toLocaleString();
 }
 
 function LeagueLogo({ topicName }: { topicName: string | undefined | null }) {
@@ -21,7 +40,7 @@ function LeagueLogo({ topicName }: { topicName: string | undefined | null }) {
   );
 }
 
-export function ArticleCard({ item, colors }: ArticleCardProps) {
+export function ArticleCard({ item, colors, isTrending }: ArticleCardProps) {
   const headline =
     item.promoHed || item.headline || item.title || '(no headline)';
   const dek = item.promoDek || item.dek;
@@ -49,6 +68,14 @@ export function ArticleCard({ item, colors }: ArticleCardProps) {
             </View>
           ) : null}
         </View>
+        {isTrending ? (
+          <View style={styles.viewCount}>
+            <EyeIcon color="#04802D" />
+            <Text style={[styles.viewCountText, { color: colors.text.primary }]}>
+              {fakeViewCount(item.content_id)}
+            </Text>
+          </View>
+        ) : null}
         <View style={styles.overflow}>
           <Text style={[styles.overflowDots, { color: colors.text.secondary }]}>•••</Text>
         </View>
@@ -98,6 +125,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 8,
     height: 32,
   },
   metadataLeft: {
@@ -135,6 +163,16 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: 14,
     lineHeight: 14,
+  },
+  viewCount: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  viewCountText: {
+    fontFamily: fonts.medium,
+    fontSize: 16,
+    lineHeight: 20,
   },
   overflow: {
     width: 24,

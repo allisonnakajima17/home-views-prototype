@@ -12,12 +12,21 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 const NAV_ROW_HEIGHT = 44;
 const TINT_CROSSFADE_MS = 250;
+const TINT_OPACITY = 0.12;
+const BASE_FOG_OPACITY = 0.3;
 
-const VIEW_TINTS: (string | null)[] = [
-  'rgb(0, 74, 206)',  // For you
-  null,               // Following — future: accept dynamic color prop
-  'rgb(5, 150, 70)',  // Trending
+type TintColor = [number, number, number] | null;
+
+const VIEW_TINTS: TintColor[] = [
+  [0, 74, 206],   // For you
+  null,            // Following — future: accept dynamic color prop
+  [5, 150, 70],   // Trending
 ];
+
+function tintGradient(rgb: [number, number, number]): [string, string] {
+  const [r, g, b] = rgb;
+  return [`rgba(${r},${g},${b},${TINT_OPACITY})`, `rgba(${r},${g},${b},0)`];
+}
 
 interface CustomHeaderProps {
   insets: EdgeInsets;
@@ -89,26 +98,35 @@ export function CustomHeader({ insets, colors, isDark, pillsVisible, scrollY, se
 
   return (
     <View style={styles.container} pointerEvents="box-none">
-      {VIEW_TINTS.map((color, i) =>
-        color != null ? (
-          <Animated.View
-            key={i}
-            style={[StyleSheet.absoluteFill, { backgroundColor: color, opacity: tintOpacities[i] }]}
-          />
-        ) : null
-      )}
-
-      <LinearGradient
-        colors={['rgba(255,255,255,0.88)', 'rgba(255,255,255,1.0)']}
-        style={StyleSheet.absoluteFill}
-        pointerEvents="none"
-      />
-
       <AnimatedBlurView
         tint={isDark ? 'dark' : 'light'}
         intensity={80}
         style={[StyleSheet.absoluteFill, { opacity: blurOpacity }]}
       />
+
+      <View
+        pointerEvents="none"
+        style={[StyleSheet.absoluteFill, {
+          backgroundColor: isDark
+            ? `rgba(0,0,0,${BASE_FOG_OPACITY})`
+            : `rgba(255,255,255,${BASE_FOG_OPACITY})`,
+        }]}
+      />
+
+      {VIEW_TINTS.map((rgb, i) =>
+        rgb != null ? (
+          <Animated.View
+            key={i}
+            pointerEvents="none"
+            style={[StyleSheet.absoluteFill, { opacity: tintOpacities[i] }]}
+          >
+            <LinearGradient
+              colors={tintGradient(rgb)}
+              style={StyleSheet.absoluteFill}
+            />
+          </Animated.View>
+        ) : null
+      )}
 
       <View style={{ height: insets.top }} />
 
