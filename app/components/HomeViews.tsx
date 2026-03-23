@@ -1,34 +1,31 @@
 import React, { useState } from 'react';
 import { Animated, Pressable, StyleSheet, Text } from 'react-native';
-import { useScrollOffset } from '../../src/ScrollOffsetContext';
 import type { ThemeColors } from '../../src/theme';
 import { fonts } from '../../src/fonts';
 
 const LABELS = ['For you', 'Following', 'Trending'];
-const COLLAPSE_DISTANCE = 20;
 
 export const HOME_VIEWS_HEIGHT = 44;
 
-export function HomeViews({ colors, isDark }: { colors: ThemeColors; isDark: boolean }) {
+interface HomeViewsProps {
+  colors: ThemeColors;
+  isDark: boolean;
+  pillsVisible: Animated.Value;
+}
+
+export function HomeViews({ colors, isDark, pillsVisible }: HomeViewsProps) {
   const [selected, setSelected] = useState(0);
-  const scrollY = useScrollOffset();
 
-  const opacity = scrollY.interpolate({
-    inputRange: [0, COLLAPSE_DISTANCE],
-    outputRange: [1, 0],
-    extrapolate: 'clamp',
+  const opacity = pillsVisible;
+
+  const scale = pillsVisible.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.9, 1],
   });
 
-  const scale = scrollY.interpolate({
-    inputRange: [0, COLLAPSE_DISTANCE],
-    outputRange: [1, 0.9],
-    extrapolate: 'clamp',
-  });
-
-  const translateY = scrollY.interpolate({
-    inputRange: [0, COLLAPSE_DISTANCE],
-    outputRange: [0, -8],
-    extrapolate: 'clamp',
+  const translateY = pillsVisible.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-8, 0],
   });
 
   const unselectedBg = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';

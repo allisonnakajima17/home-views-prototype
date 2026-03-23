@@ -1,7 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import {
   ActivityIndicator,
   Animated,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -15,9 +17,11 @@ import { useTheme } from '../src/theme';
 import type { FeedItem } from '../src/types/feed';
 import { fonts } from '../src/fonts';
 import { ArticleCard } from './components/ArticleCard';
-import { HomeViews, HOME_VIEWS_HEIGHT } from './components/HomeViews';
+import { HOME_VIEWS_HEIGHT } from './components/HomeViews';
+import { CustomHeader } from './components/CustomHeader';
 
 const NAV_BAR_HEIGHT = 44;
+const DIRECTION_THRESHOLD = 10;
 const PROFILE = DEFAULT_USER_PROFILES[3]; // "2 Teams (Popular)"
 
 export default function FeedScreen() {
@@ -28,12 +32,47 @@ export default function FeedScreen() {
   });
 
   const scrollY = useScrollOffset();
+  const pillsVisible = useRef(new Animated.Value(1)).current;
+  const prevOffsetRef = useRef(0);
+  const isVisibleRef = useRef(true);
+
+  const handleScrollDirection = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const currentOffset = event.nativeEvent.contentOffset.y;
+      const prev = prevOffsetRef.current;
+      const delta = currentOffset - prev;
+      prevOffsetRef.current = currentOffset;
+
+      const nearTop = currentOffset <= DIRECTION_THRESHOLD;
+      const shouldShow = nearTop || delta < -DIRECTION_THRESHOLD;
+      const shouldHide = !nearTop && delta > DIRECTION_THRESHOLD;
+
+      if (shouldShow && !isVisibleRef.current) {
+        isVisibleRef.current = true;
+        Animated.spring(pillsVisible, {
+          toValue: 1,
+          useNativeDriver: true,
+          tension: 80,
+          friction: 12,
+        }).start();
+      } else if (shouldHide && isVisibleRef.current) {
+        isVisibleRef.current = false;
+        Animated.timing(pillsVisible, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+      }
+    },
+    [pillsVisible],
+  );
+
   const onScroll = useMemo(
     () => Animated.event(
       [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-      { useNativeDriver: true },
+      { useNativeDriver: true, listener: handleScrollDirection },
     ),
-    [scrollY],
+    [scrollY, handleScrollDirection],
   );
 
   const renderItem = ({ item }: { item: FeedItem }) => (
@@ -101,12 +140,13 @@ export default function FeedScreen() {
             onScroll={onScroll}
             scrollEventThrottle={16}
           />
-          <View
-            style={[styles.pillsOverlay, { top: insets.top + NAV_BAR_HEIGHT }]}
-            pointerEvents="box-none"
-          >
-            <HomeViews colors={colors} isDark={isDark} />
-          </View>
+          <CustomHeader
+            insets={insets}
+            colors={colors}
+            isDark={isDark}
+            pillsVisible={pillsVisible}
+            scrollY={scrollY}
+          />
         </>
       )}
     </View>
@@ -116,11 +156,6 @@ export default function FeedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  pillsOverlay: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
   },
   center: {
     flex: 1,
