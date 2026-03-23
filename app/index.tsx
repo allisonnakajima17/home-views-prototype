@@ -2,6 +2,8 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Animated,
+  Dimensions,
+  Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
   StyleSheet,
@@ -20,6 +22,7 @@ import { ArticleCard } from './components/ArticleCard';
 import { HOME_VIEWS_HEIGHT } from './components/HomeViews';
 import { CustomHeader } from './components/CustomHeader';
 
+const followingScreenshot = require('../assets/Following-content.png');
 const NAV_BAR_HEIGHT = 44;
 const DIRECTION_THRESHOLD = 10;
 const PROFILE = DEFAULT_USER_PROFILES[3]; // "2 Teams (Popular)"
@@ -156,19 +159,35 @@ export default function FeedScreen() {
         </View>
       ) : (
         <>
-          <Animated.FlatList
-            data={displayItems}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            onEndReached={loadMore}
-            onEndReachedThreshold={0.3}
-            ListFooterComponent={ListFooter}
-            contentContainerStyle={{
-              paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT,
-            }}
-            onScroll={onScroll}
-            scrollEventThrottle={16}
-          />
+          {selectedView === 1 ? (
+            <Animated.ScrollView
+              contentContainerStyle={{
+                paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT + 16,
+              }}
+              onScroll={onScroll}
+              scrollEventThrottle={16}
+            >
+              <Image
+                source={followingScreenshot}
+                style={styles.followingImage}
+                resizeMode="contain"
+              />
+            </Animated.ScrollView>
+          ) : (
+            <Animated.FlatList
+              data={displayItems}
+              renderItem={renderItem}
+              keyExtractor={keyExtractor}
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.3}
+              ListFooterComponent={ListFooter}
+              contentContainerStyle={{
+                paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT,
+              }}
+              onScroll={onScroll}
+              scrollEventThrottle={16}
+            />
+          )}
           <CustomHeader
             insets={insets}
             colors={colors}
@@ -222,5 +241,9 @@ const styles = StyleSheet.create({
   footerText: {
     fontFamily: fonts.regular,
     fontSize: 13,
+  },
+  followingImage: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').width * (7347 / 1179),
   },
 });
