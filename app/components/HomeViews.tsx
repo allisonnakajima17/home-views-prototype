@@ -7,7 +7,7 @@ import { fonts } from '../../src/fonts';
 const LABELS = ['For you', 'Following', 'Trending'];
 const COLLAPSE_DISTANCE = 20;
 
-export const HOME_VIEWS_HEIGHT = 52;
+export const HOME_VIEWS_HEIGHT = 44;
 
 export function HomeViews({ colors, isDark }: { colors: ThemeColors; isDark: boolean }) {
   const [selected, setSelected] = useState(0);
@@ -27,7 +27,7 @@ export function HomeViews({ colors, isDark }: { colors: ThemeColors; isDark: boo
 
   const translateY = scrollY.interpolate({
     inputRange: [0, COLLAPSE_DISTANCE],
-    outputRange: [0, -4],
+    outputRange: [0, -8],
     extrapolate: 'clamp',
   });
 
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingHorizontal: 16,
     paddingTop: 12,
-    paddingBottom: 8,
+    paddingBottom: 0,
   },
   pill: {
     borderRadius: 100,
