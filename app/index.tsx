@@ -34,18 +34,28 @@ export default function FeedScreen() {
   const scrollY = useScrollOffset();
   const pillsVisible = useRef(new Animated.Value(1)).current;
   const prevOffsetRef = useRef(0);
+  const directionAnchorRef = useRef(0);
+  const lastDirectionRef = useRef<'up' | 'down' | null>(null);
   const isVisibleRef = useRef(true);
 
   const handleScrollDirection = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
       const currentOffset = event.nativeEvent.contentOffset.y;
       const prev = prevOffsetRef.current;
-      const delta = currentOffset - prev;
+      const frameDelta = currentOffset - prev;
       prevOffsetRef.current = currentOffset;
 
+      const currentDirection = frameDelta > 0 ? 'down' : frameDelta < 0 ? 'up' : null;
+
+      if (currentDirection && currentDirection !== lastDirectionRef.current) {
+        directionAnchorRef.current = currentOffset;
+        lastDirectionRef.current = currentDirection;
+      }
+
+      const accumulated = currentOffset - directionAnchorRef.current;
       const nearTop = currentOffset <= DIRECTION_THRESHOLD;
-      const shouldShow = nearTop || delta < -DIRECTION_THRESHOLD;
-      const shouldHide = !nearTop && delta > DIRECTION_THRESHOLD;
+      const shouldShow = nearTop || accumulated < -DIRECTION_THRESHOLD;
+      const shouldHide = !nearTop && accumulated > DIRECTION_THRESHOLD;
 
       if (shouldShow && !isVisibleRef.current) {
         isVisibleRef.current = true;
