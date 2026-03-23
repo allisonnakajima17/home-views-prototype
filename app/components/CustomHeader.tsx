@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import type { EdgeInsets } from 'react-native-safe-area-context';
 import type { ThemeColors } from '../../src/theme';
 import { HeaderLogo } from './HeaderLogo';
@@ -10,6 +11,13 @@ import { HomeViews, HOME_VIEWS_HEIGHT } from './HomeViews';
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 const NAV_ROW_HEIGHT = 44;
+const TINT_CROSSFADE_MS = 250;
+
+const VIEW_TINTS: (string | null)[] = [
+  'rgb(0, 74, 206)',  // For you
+  null,               // Following — future: accept dynamic color prop
+  'rgb(5, 150, 70)',  // Trending
+];
 
 interface CustomHeaderProps {
   insets: EdgeInsets;
@@ -17,9 +25,11 @@ interface CustomHeaderProps {
   isDark: boolean;
   pillsVisible: Animated.Value;
   scrollY: Animated.Value;
+  selectedView: number;
+  onSelectView: (index: number) => void;
 }
 
-export function CustomHeader({ insets, colors, isDark, pillsVisible, scrollY }: CustomHeaderProps) {
+export function CustomHeader({ insets, colors, isDark, pillsVisible, scrollY, selectedView, onSelectView }: CustomHeaderProps) {
   const blurOpacity = scrollY.interpolate({
     inputRange: [0, 80],
     outputRange: [0, 1],
@@ -31,8 +41,69 @@ export function CustomHeader({ insets, colors, isDark, pillsVisible, scrollY }: 
     outputRange: [0, HOME_VIEWS_HEIGHT],
   });
 
+  const pillRowScale = pillsVisible.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.95, 1],
+    extrapolate: 'clamp',
+  });
+
+  const pillRowOpacity = pillsVisible;
+
+  const tintOpacities = useRef(
+    VIEW_TINTS.map((_, i) => new Animated.Value(i === 0 ? 1 : 0))
+  ).current;
+
+  const prevViewRef = useRef(0);
+
+  useEffect(() => {
+    const prev = prevViewRef.current;
+    if (prev === selectedView) return;
+    prevViewRef.current = selectedView;
+
+    const animations: Animated.CompositeAnimation[] = [];
+
+    if (VIEW_TINTS[prev] != null) {
+      animations.push(
+        Animated.timing(tintOpacities[prev], {
+          toValue: 0,
+          duration: TINT_CROSSFADE_MS,
+          useNativeDriver: true,
+        })
+      );
+    }
+
+    if (VIEW_TINTS[selectedView] != null) {
+      animations.push(
+        Animated.timing(tintOpacities[selectedView], {
+          toValue: 1,
+          duration: TINT_CROSSFADE_MS,
+          useNativeDriver: true,
+        })
+      );
+    }
+
+    if (animations.length > 0) {
+      Animated.parallel(animations).start();
+    }
+  }, [selectedView, tintOpacities]);
+
   return (
     <View style={styles.container} pointerEvents="box-none">
+      {VIEW_TINTS.map((color, i) =>
+        color != null ? (
+          <Animated.View
+            key={i}
+            style={[StyleSheet.absoluteFill, { backgroundColor: color, opacity: tintOpacities[i] }]}
+          />
+        ) : null
+      )}
+
+      <LinearGradient
+        colors={['rgba(255,255,255,0.88)', 'rgba(255,255,255,1.0)']}
+        style={StyleSheet.absoluteFill}
+        pointerEvents="none"
+      />
+
       <AnimatedBlurView
         tint={isDark ? 'dark' : 'light'}
         intensity={80}
@@ -46,8 +117,8 @@ export function CustomHeader({ insets, colors, isDark, pillsVisible, scrollY }: 
         <HeaderMenuButton colors={colors} isDark={isDark} />
       </View>
 
-      <Animated.View style={[styles.pillWrapper, { height: pillRowHeight }]}>
-        <HomeViews colors={colors} isDark={isDark} pillsVisible={pillsVisible} />
+      <Animated.View style={[styles.pillWrapper, { height: pillRowHeight, opacity: pillRowOpacity, transform: [{ scale: pillRowScale }] }]}>
+        <HomeViews colors={colors} isDark={isDark} pillsVisible={pillsVisible} selectedView={selectedView} onSelectView={onSelectView} />
       </Animated.View>
     </View>
   );

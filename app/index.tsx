@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Animated,
@@ -30,6 +30,8 @@ export default function FeedScreen() {
   const { items, loading, loadingMore, error, endOfFeed, loadMore } = useFeed({
     teamIds: PROFILE.team_ids,
   });
+
+  const [selectedView, setSelectedView] = useState(0);
 
   const scrollY = useScrollOffset();
   const pillsVisible = useRef(new Animated.Value(1)).current;
@@ -156,6 +158,8 @@ export default function FeedScreen() {
             isDark={isDark}
             pillsVisible={pillsVisible}
             scrollY={scrollY}
+            selectedView={selectedView}
+            onSelectView={setSelectedView}
           />
         </>
       )}

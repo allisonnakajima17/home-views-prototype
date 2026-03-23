@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Animated, Pressable, StyleSheet, Text } from 'react-native';
 import type { ThemeColors } from '../../src/theme';
 import { fonts } from '../../src/fonts';
@@ -11,10 +11,11 @@ interface HomeViewsProps {
   colors: ThemeColors;
   isDark: boolean;
   pillsVisible: Animated.Value;
+  selectedView: number;
+  onSelectView: (index: number) => void;
 }
 
-export function HomeViews({ colors, isDark, pillsVisible }: HomeViewsProps) {
-  const [selected, setSelected] = useState(0);
+export function HomeViews({ colors, isDark, pillsVisible, selectedView, onSelectView }: HomeViewsProps) {
 
   const opacity = pillsVisible;
 
@@ -43,11 +44,11 @@ export function HomeViews({ colors, isDark, pillsVisible }: HomeViewsProps) {
       ]}
     >
       {LABELS.map((label, i) => {
-        const isActive = i === selected;
+        const isActive = i === selectedView;
         return (
           <Pressable
             key={label}
-            onPress={() => setSelected(i)}
+            onPress={() => onSelectView(i)}
             style={[
               styles.pill,
               { backgroundColor: isActive ? colors.text.primary : unselectedBg },
