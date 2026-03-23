@@ -110,18 +110,40 @@ export default function FeedScreen() {
     return shuffled;
   }, [filteredItems]);
 
+  const showPills = useCallback(() => {
+    if (!isVisibleRef.current) {
+      isVisibleRef.current = true;
+      Animated.spring(pillsVisible, {
+        toValue: 1,
+        useNativeDriver: false,
+        tension: 80,
+        friction: 12,
+      }).start();
+    }
+    directionAnchorRef.current = prevOffsetRef.current;
+    lastDirectionRef.current = null;
+  }, [pillsVisible]);
+
   const handleSelectView = useCallback((index: number) => {
     setSelectedView(index);
     pagerRef.current?.setPage(index);
-  }, []);
+    showPills();
+  }, [showPills]);
 
-  const handlePageSelected = useCallback((e: { nativeEvent: { position: number } }) => {
-    const page = e.nativeEvent.position;
+  const handlePageScroll = useCallback((e: { nativeEvent: { position: number; offset: number } }) => {
+    const { position, offset } = e.nativeEvent;
+    const page = offset > 0.5 ? position + 1 : position;
     if (page !== selectedView) {
       Haptics.selectionAsync();
       setSelectedView(page);
     }
   }, [selectedView]);
+
+  const handlePageScrollState = useCallback((e: { nativeEvent: { pageScrollState: string } }) => {
+    if (e.nativeEvent.pageScrollState === 'dragging') {
+      showPills();
+    }
+  }, [showPills]);
 
   const renderForYouItem = useCallback(({ item }: { item: FeedItem }) => (
     <ArticleCard item={item} colors={colors} isTrending={false} />
@@ -183,7 +205,8 @@ export default function FeedScreen() {
             ref={pagerRef}
             style={styles.pager}
             initialPage={0}
-            onPageSelected={handlePageSelected}
+            onPageScroll={handlePageScroll}
+            onPageScrollStateChanged={handlePageScrollState}
             overdrag={false}
           >
             <View key="0" style={styles.page}>
