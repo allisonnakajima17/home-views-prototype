@@ -1,5 +1,6 @@
 import React from 'react';
 import { Animated, Pressable, StyleSheet, Text } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import type { ThemeColors } from '../../src/theme';
 import { fonts } from '../../src/fonts';
 
@@ -48,7 +49,7 @@ export function HomeViews({ colors, isDark, pillsVisible, selectedView, onSelect
         return (
           <Pressable
             key={label}
-            onPress={() => onSelectView(i)}
+            onPress={() => { Haptics.selectionAsync(); onSelectView(i); }}
             style={[
               styles.pill,
               { backgroundColor: isActive ? colors.text.primary : unselectedBg },
