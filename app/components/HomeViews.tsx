@@ -1,17 +1,50 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text } from 'react-native';
+import { useScrollOffset } from '../../src/ScrollOffsetContext';
 import type { ThemeColors } from '../../src/theme';
 import { fonts } from '../../src/fonts';
 
 const LABELS = ['For you', 'Following', 'Trending'];
+const COLLAPSE_DISTANCE = 30;
+
+export const HOME_VIEWS_HEIGHT = 84;
 
 export function HomeViews({ colors, isDark }: { colors: ThemeColors; isDark: boolean }) {
   const [selected, setSelected] = useState(0);
+  const scrollY = useScrollOffset();
+
+  const opacity = scrollY.interpolate({
+    inputRange: [0, COLLAPSE_DISTANCE],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+
+  const scale = scrollY.interpolate({
+    inputRange: [0, COLLAPSE_DISTANCE],
+    outputRange: [1, 0.9],
+    extrapolate: 'clamp',
+  });
+
+  const translateY = scrollY.interpolate({
+    inputRange: [0, COLLAPSE_DISTANCE],
+    outputRange: [0, -10],
+    extrapolate: 'clamp',
+  });
 
   const unselectedBg = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      pointerEvents="box-none"
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.surface.primary,
+          opacity,
+          transform: [{ scale }, { translateY }],
+        },
+      ]}
+    >
       {LABELS.map((label, i) => {
         const isActive = i === selected;
         return (
@@ -35,7 +68,7 @@ export function HomeViews({ colors, isDark }: { colors: ThemeColors; isDark: boo
           </Pressable>
         );
       })}
-    </View>
+    </Animated.View>
   );
 }
 

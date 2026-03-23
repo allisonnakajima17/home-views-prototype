@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useScrollOffset } from '../src/ScrollOffsetContext';
 import { useFeed } from '../src/hooks/useFeed';
 import { DEFAULT_USER_PROFILES } from '../src/lib/feedApi';
@@ -14,19 +15,24 @@ import { useTheme } from '../src/theme';
 import type { FeedItem } from '../src/types/feed';
 import { fonts } from '../src/fonts';
 import { ArticleCard } from './components/ArticleCard';
-import { HomeViews } from './components/HomeViews';
+import { HomeViews, HOME_VIEWS_HEIGHT } from './components/HomeViews';
 
+const NAV_BAR_HEIGHT = 44;
 const PROFILE = DEFAULT_USER_PROFILES[3]; // "2 Teams (Popular)"
 
 export default function FeedScreen() {
   const { colors, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
   const { items, loading, loadingMore, error, endOfFeed, loadMore } = useFeed({
     teamIds: PROFILE.team_ids,
   });
 
   const scrollY = useScrollOffset();
   const onScroll = useMemo(
-    () => Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true }),
+    () => Animated.event(
+      [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+      { useNativeDriver: true },
+    ),
     [scrollY],
   );
 
@@ -81,18 +87,27 @@ export default function FeedScreen() {
           </TouchableOpacity>
         </View>
       ) : (
-        <Animated.FlatList
-          data={items}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.3}
-          ListHeaderComponent={<HomeViews colors={colors} isDark={isDark} />}
-          ListFooterComponent={ListFooter}
-          contentInsetAdjustmentBehavior="automatic"
-          onScroll={onScroll}
-          scrollEventThrottle={16}
-        />
+        <>
+          <Animated.FlatList
+            data={items}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            onEndReached={loadMore}
+            onEndReachedThreshold={0.3}
+            ListFooterComponent={ListFooter}
+            contentContainerStyle={{
+              paddingTop: insets.top + NAV_BAR_HEIGHT + HOME_VIEWS_HEIGHT,
+            }}
+            onScroll={onScroll}
+            scrollEventThrottle={16}
+          />
+          <View
+            style={[styles.pillsOverlay, { top: insets.top + NAV_BAR_HEIGHT }]}
+            pointerEvents="box-none"
+          >
+            <HomeViews colors={colors} isDark={isDark} />
+          </View>
+        </>
       )}
     </View>
   );
@@ -101,6 +116,11 @@ export default function FeedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  pillsOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
   },
   center: {
     flex: 1,
