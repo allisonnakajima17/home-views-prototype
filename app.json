@@ -10,13 +10,23 @@
     ],
     "ios": {
       "bundleIdentifier": "com.cbssports.homeviewsprototype",
-      "supportsTablet": false
+      "supportsTablet": false,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "newArchEnabled": true,
     "plugins": [
       "expo-asset",
       "expo-font",
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "3b8df336-ce64-4041-a62c-b2404b83ced2"
+      }
+    },
+    "owner": "anakajima17"
   }
 }

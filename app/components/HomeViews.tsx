@@ -5,7 +5,7 @@ import { fonts } from '../../src/fonts';
 
 const LABELS = ['For you', 'Following', 'Trending'];
 
-export const HOME_VIEWS_HEIGHT = 44;
+export const HOME_VIEWS_HEIGHT = 52;
 
 interface HomeViewsProps {
   colors: ThemeColors;
@@ -36,7 +36,7 @@ export function HomeViews({ colors, isDark, pillsVisible }: HomeViewsProps) {
       style={[
         styles.container,
         {
-          backgroundColor: colors.surface.primary,
+          backgroundColor: 'transparent',
           opacity,
           transform: [{ scale }, { translateY }],
         },

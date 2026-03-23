@@ -51,7 +51,7 @@ export default function FeedScreen() {
         isVisibleRef.current = true;
         Animated.spring(pillsVisible, {
           toValue: 1,
-          useNativeDriver: true,
+          useNativeDriver: false,
           tension: 80,
           friction: 12,
         }).start();
@@ -60,7 +60,7 @@ export default function FeedScreen() {
         Animated.timing(pillsVisible, {
           toValue: 0,
           duration: 200,
-          useNativeDriver: true,
+          useNativeDriver: false,
         }).start();
       }
     },

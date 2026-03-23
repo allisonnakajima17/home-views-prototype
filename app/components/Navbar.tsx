@@ -18,15 +18,16 @@ function PlusIcon({ color }: { color: string }) {
 
 function PlusCircle({ colors, zIndex, isLast }: { colors: ThemeColors; zIndex: number; isLast?: boolean }) {
   return (
-    <View style={[styles.teamCircle, !isLast && styles.teamCircleOverlap, { backgroundColor: colors.surface.tertiary, borderColor: colors.surface.primary, zIndex }]}>
+    <View style={[styles.teamCircle, !isLast && styles.teamCircleOverlap, { backgroundColor: colors.surface.tertiary, borderColor: colors.surface.tertiary, zIndex }]}>
       <PlusIcon color={colors.text.secondary} />
     </View>
   );
 }
 
-export function HeaderMenuButton({ colors }: { colors: ThemeColors }) {
+export function HeaderMenuButton({ colors, isDark }: { colors: ThemeColors; isDark: boolean }) {
+  const pillBg = colors.surface.tertiary;
   return (
-    <Pressable style={styles.menuPill}>
+    <Pressable style={[styles.menuPill, { backgroundColor: pillBg }]}>
       <Text style={[styles.menuText, { color: colors.text.primary }]}>Menu</Text>
       <PlusCircle colors={colors} zIndex={3} />
       <PlusCircle colors={colors} zIndex={2} />
@@ -40,6 +41,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 100,
   },
   menuText: {
     fontFamily: fonts.demiBold,
