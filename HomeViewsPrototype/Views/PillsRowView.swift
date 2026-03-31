@@ -10,6 +10,7 @@ struct PillsRowView: View {
             ForEach(Tab.allCases) { tab in
                 PillButton(
                     label: tab.label,
+                    icon: tab == .following ? "FavStar" : nil,
                     isSelected: viewModel.selectedTab == tab,
                     theme: theme,
                     isDark: colorScheme == .dark
@@ -28,6 +29,7 @@ struct PillsRowView: View {
 
 private struct PillButton: View {
     let label: String
+    var icon: String? = nil
     let isSelected: Bool
     let theme: AppTheme
     let isDark: Bool
@@ -35,19 +37,27 @@ private struct PillButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text(label)
-                .font(.custom("TTNormsPro-DemiBold", size: 14))
-                .lineLimit(1)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 16)
-                .foregroundColor(isSelected ? theme.surfacePrimary : theme.textPrimary)
-                .background(
-                    Capsule().fill(
-                        isSelected
-                            ? theme.textPrimary
-                            : (isDark ? Color.white.opacity(0.1) : Color.black.opacity(0.1))
-                    )
+            HStack(spacing: 4) {
+                if let icon, isSelected {
+                    Image(icon)
+                        .resizable()
+                        .renderingMode(.template)
+                        .frame(width: 14, height: 14)
+                }
+                Text(label)
+                    .font(.custom("TTNormsPro-DemiBold", size: 14))
+                    .lineLimit(1)
+            }
+            .padding(.vertical, 8)
+            .padding(.horizontal, 16)
+            .foregroundColor(isSelected ? theme.surfacePrimary : theme.textPrimary)
+            .background(
+                Capsule().fill(
+                    isSelected
+                        ? theme.textPrimary
+                        : (isDark ? Color.white.opacity(0.1) : Color.black.opacity(0.1))
                 )
+            )
         }
         .buttonStyle(.plain)
     }
