@@ -17,7 +17,7 @@ struct TeamTilesRow: View {
     ]
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 8) {
             ForEach(tiles) { tile in
                 Button {
                     if tile.screenImage != nil {
@@ -36,8 +36,8 @@ struct TeamTilesRow: View {
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .padding(.bottom, 20)
+        .padding(.top, 12)
+        .padding(.bottom, 24)
     }
 }
 
