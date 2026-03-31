@@ -52,11 +52,10 @@ struct TeamScreenView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .ignoresSafeArea()
 
-            // Back button
+            // Invisible dismiss button — still tappable
             Button(action: onDismiss) {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 30))
-                    .foregroundStyle(.white, .black.opacity(0.5))
+                Color.clear
+                    .frame(width: 44, height: 44)
             }
             .padding(.top, 54)
             .padding(.leading, 16)
