@@ -9,6 +9,7 @@ struct TeamTilesRow: View {
                 Image(tile)
                     .resizable()
                     .aspectRatio(1, contentMode: .fit)
+                    .frame(width: 56, height: 56)
             }
         }
         .padding(.horizontal, 16)
