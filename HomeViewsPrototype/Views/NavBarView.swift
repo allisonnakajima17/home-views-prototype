@@ -18,15 +18,14 @@ struct NavBarView: View {
     }
 }
 
-// CBS Sports logo as a SwiftUI shape from the SVG path data
 struct CBSLogoView: View {
     let color: Color
 
     var body: some View {
-        // Simplified CBS Sports text logo
-        Text("CBS SPORTS")
-            .font(.custom("TTNormsPro-Bold", size: 13))
-            .tracking(1.5)
+        Image("CBSLogo")
+            .resizable()
+            .renderingMode(.template)
+            .aspectRatio(contentMode: .fit)
             .foregroundColor(color)
     }
 }
