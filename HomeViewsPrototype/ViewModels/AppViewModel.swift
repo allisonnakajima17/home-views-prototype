@@ -26,7 +26,7 @@ final class AppViewModel {
     func selectTab(_ tab: Tab) {
         guard tab != selectedTab else { return }
         selectedTab = tab
-        withAnimation { pillsVisible = true }
+        withAnimation(.easeInOut(duration: 0.2)) { pillsVisible = true }
         UISelectionFeedbackGenerator().selectionChanged()
         webCoordinator?.switchToTab(tab)
     }
@@ -39,7 +39,7 @@ final class AppViewModel {
 
         if nearTop {
             if !pillsVisible {
-                withAnimation { pillsVisible = true }
+                withAnimation(.easeInOut(duration: 0.2)) { pillsVisible = true }
             }
             directionAnchor = offset
             lastDirection = .none
@@ -64,7 +64,7 @@ final class AppViewModel {
         if accumulated > 8 {
             let shouldShow = currentDirection == .up
             if shouldShow != pillsVisible {
-                withAnimation { pillsVisible = shouldShow }
+                withAnimation(.easeInOut(duration: 0.2)) { pillsVisible = shouldShow }
             }
         }
 

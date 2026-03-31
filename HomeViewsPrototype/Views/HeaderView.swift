@@ -16,14 +16,14 @@ struct HeaderView: View {
             VStack(spacing: 0) {
                 NavBarView()
 
-                // Pills using native iOS transition
-                if viewModel.pillsVisible {
+                // Pills clipped reveal — no fade, no bleed
+                VStack(spacing: 0) {
                     PillsRowView(viewModel: viewModel)
                         .frame(height: 52)
-                        .transition(.move(edge: .top).combined(with: .opacity))
-
                     Spacer().frame(height: 8)
                 }
+                .frame(height: viewModel.pillsVisible ? 60 : 0, alignment: .top)
+                .clipped()
             }
         }
         .background(
