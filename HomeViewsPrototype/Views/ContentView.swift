@@ -20,8 +20,8 @@ struct ContentView: View {
             if viewModel.selectedTab == .following {
                 GeometryReader { geo in
                     let w = geo.size.width
-                    Color.clear.ignoresSafeArea()
-                        .background(colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
+
+                    (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
                         .ignoresSafeArea()
 
                     VStack(spacing: 0) {
@@ -29,11 +29,11 @@ struct ContentView: View {
                         SAAGCarousel()
                         Image("FollowingFeedPlaceholder")
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
                             .frame(width: w)
                             .clipped()
                     }
-                    .frame(width: w)
+                    .frame(width: w, alignment: .top)
                     .offset(y: headerHeight - viewModel.nativeScrollOffset)
                 }
                 .allowsHitTesting(false)
@@ -43,13 +43,13 @@ struct ContentView: View {
             if viewModel.selectedTab == .trending {
                 GeometryReader { geo in
                     let w = geo.size.width
-                    Color.clear.ignoresSafeArea()
-                        .background(colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
+
+                    (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
                         .ignoresSafeArea()
 
                     Image("TrendingFeedPlaceholder")
                         .resizable()
-                        .scaledToFit()
+                        .scaledToFill()
                         .frame(width: w)
                         .clipped()
                         .offset(y: headerHeight - viewModel.nativeScrollOffset)
