@@ -5,6 +5,9 @@ struct ContentView: View {
     @Environment(\.theme) private var theme
     @Environment(\.colorScheme) private var colorScheme
 
+    // Header height: nav (44) + pills (48) + spacing (8) = 100
+    private let headerHeight: CGFloat = 100
+
     var body: some View {
         ZStack(alignment: .top) {
             (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
@@ -12,6 +15,13 @@ struct ContentView: View {
 
             WebViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
+
+            // Team tiles — sits below header, scrolls with feed content
+            if viewModel.selectedTab == .following {
+                TeamTilesRow()
+                    .offset(y: headerHeight - viewModel.scrollOffset)
+                    .opacity(viewModel.scrollOffset > headerHeight ? 0 : 1)
+            }
 
             HeaderView(viewModel: viewModel)
         }
