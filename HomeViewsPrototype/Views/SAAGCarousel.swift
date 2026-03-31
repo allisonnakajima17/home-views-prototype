@@ -12,6 +12,7 @@ struct SAAGCarousel: View {
                     Image("SAAGCardAlt")
                         .resizable()
                         .scaledToFit()
+                        .frame(height: 80)
                         .padding(.horizontal, 16)
                 }
             } else {
