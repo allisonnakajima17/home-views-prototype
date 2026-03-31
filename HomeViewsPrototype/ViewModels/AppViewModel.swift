@@ -20,7 +20,7 @@ final class AppViewModel {
     weak var webCoordinator: WebViewCoordinator?
 
     var blurOpacity: CGFloat {
-        min(max(scrollOffset / 80, 0), 1)
+        1.0
     }
 
     func selectTab(_ tab: Tab) {
