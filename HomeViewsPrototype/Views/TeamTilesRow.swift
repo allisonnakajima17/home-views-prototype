@@ -11,6 +11,7 @@ struct TeamTilesRow: View {
                     .aspectRatio(1, contentMode: .fit)
                     .frame(width: 56, height: 56)
             }
+            Spacer()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
