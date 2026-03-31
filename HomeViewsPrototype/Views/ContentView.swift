@@ -18,15 +18,21 @@ struct ContentView: View {
 
             // Following tab overlay — tiles + SAAG carousel + placeholder feed
             if viewModel.selectedTab == .following {
-                VStack(spacing: 0) {
-                    TeamTilesRow(viewModel: viewModel)
-                    SAAGCarousel()
-                    Image("FollowingFeedPlaceholder")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity)
+                (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
+                    .ignoresSafeArea()
+
+                ScrollView {
+                    VStack(spacing: 0) {
+                        TeamTilesRow(viewModel: viewModel)
+                        SAAGCarousel()
+                        Image("FollowingFeedPlaceholder")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                    }
                 }
-                .offset(y: headerHeight - viewModel.nativeScrollOffset)
+                .offset(y: headerHeight)
+                .ignoresSafeArea(edges: .bottom)
             }
 
             HeaderView(viewModel: viewModel)
