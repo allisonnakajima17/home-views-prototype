@@ -41,11 +41,11 @@ struct HeaderView: View {
                     }
                 }
 
-                // Fade to surface color — top half clear, bottom half fades to solid
+                // Fade to background color — top half clear, bottom half fades to solid
                 LinearGradient(
                     stops: [
-                        .init(color: theme.surfacePrimary.opacity(0), location: 0.5),
-                        .init(color: theme.surfacePrimary, location: 1.0)
+                        .init(color: (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary).opacity(0), location: 0.5),
+                        .init(color: colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary, location: 1.0)
                     ],
                     startPoint: .top,
                     endPoint: .bottom
