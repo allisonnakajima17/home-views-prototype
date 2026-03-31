@@ -30,6 +30,7 @@ struct ContentView: View {
                         TeamTilesRow(viewModel: viewModel)
                         SAAGCarousel(showAlt: showAltCarousel)
                             .allowsHitTesting(false)
+                            .id(showAltCarousel)
                         Image("FollowingFeedPlaceholder")
                             .resizable()
                             .scaledToFill()
