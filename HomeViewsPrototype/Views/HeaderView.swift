@@ -40,6 +40,20 @@ struct HeaderView: View {
                         .animation(.easeInOut(duration: 0.25), value: viewModel.selectedTab)
                     }
                 }
+
+                // Bottom fade to surface color — eliminates hard edge
+                VStack {
+                    Spacer()
+                    LinearGradient(
+                        colors: [
+                            theme.surfacePrimary.opacity(0),
+                            theme.surfacePrimary
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 20)
+                }
             }
             .ignoresSafeArea(edges: .top)
         )
