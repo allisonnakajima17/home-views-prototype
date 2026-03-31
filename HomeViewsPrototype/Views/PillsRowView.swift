@@ -27,6 +27,9 @@ struct PillsRowView: View {
     }
 }
 
+// NOTE: These pills should utilize the design system pills.
+// Only the active state fill color should change per-tab — all other
+// styling (shape, font, padding, inactive state) comes from the design system.
 private struct PillButton: View {
     let label: String
     var icon: String? = nil
@@ -43,6 +46,7 @@ private struct PillButton: View {
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 14, height: 14)
+                        // NOTE: Icon color should follow design system pill active/inactive states
                         .foregroundColor(isSelected ? (isDark ? .black : theme.surfacePrimary) : (isDark ? Color(hex: 0xC8C8C8) : Color(hex: 0x5F5F5F)))
                 }
                 Text(label)
@@ -51,11 +55,13 @@ private struct PillButton: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
+            // NOTE: Text color should follow design system pill active/inactive states
             .foregroundColor(
                 isSelected
                     ? (isDark ? .black : theme.surfacePrimary)
                     : (isDark ? .white : theme.textPrimary)
             )
+            // NOTE: Active state fill color is the only value that should change per-tab
             .background(
                 Capsule().fill(
                     isSelected
