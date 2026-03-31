@@ -29,7 +29,8 @@ struct TeamTilesRow: View {
                     Image(tile.tileImage)
                         .resizable()
                         .aspectRatio(1, contentMode: .fit)
-                        .frame(width: 72, height: 72)
+                        .frame(width: 56, height: 56)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 .buttonStyle(.plain)
             }
