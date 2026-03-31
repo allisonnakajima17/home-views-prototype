@@ -17,7 +17,7 @@ struct TeamTilesRow: View {
     ]
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 12) {
             ForEach(tiles) { tile in
                 Button {
                     if tile.screenImage != nil {

@@ -23,7 +23,8 @@ struct ContentView: View {
             }
 
             HeaderView(viewModel: viewModel)
-
+        }
+        .overlay {
             // Full-screen team screen — slides from right
             if let tile = viewModel.selectedTeamScreen, let screenImage = tile.screenImage {
                 TeamScreenView(imageName: screenImage) {
@@ -33,7 +34,6 @@ struct ContentView: View {
                 }
                 .ignoresSafeArea()
                 .transition(.move(edge: .trailing))
-                .zIndex(10)
             }
         }
     }
