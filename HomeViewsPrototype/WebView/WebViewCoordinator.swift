@@ -164,6 +164,11 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
                 body {
                     padding-top: \(Int(totalPadding))px !important;
                 }
+                @media (prefers-color-scheme: dark) {
+                    html, body, #__next, .feed-container {
+                        background-color: #212121 !important;
+                    }
+                }
             `;
             document.head.appendChild(css);
         })();
