@@ -26,7 +26,7 @@ final class AppViewModel {
     func selectTab(_ tab: Tab) {
         guard tab != selectedTab else { return }
         selectedTab = tab
-        pillsVisible = true
+        withAnimation { pillsVisible = true }
         UISelectionFeedbackGenerator().selectionChanged()
         webCoordinator?.switchToTab(tab)
     }
@@ -38,7 +38,9 @@ final class AppViewModel {
         let nearTop = offset < 5
 
         if nearTop {
-            if !pillsVisible { pillsVisible = true }
+            if !pillsVisible {
+                withAnimation { pillsVisible = true }
+            }
             directionAnchor = offset
             lastDirection = .none
             prevOffset = offset
@@ -62,7 +64,7 @@ final class AppViewModel {
         if accumulated > 8 {
             let shouldShow = currentDirection == .up
             if shouldShow != pillsVisible {
-                pillsVisible = shouldShow
+                withAnimation { pillsVisible = shouldShow }
             }
         }
 

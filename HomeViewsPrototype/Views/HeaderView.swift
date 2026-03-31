@@ -16,24 +16,14 @@ struct HeaderView: View {
             VStack(spacing: 0) {
                 NavBarView()
 
-                // Pills slide in/out vertically
-                PillsRowView(viewModel: viewModel)
-                    .frame(height: 52)
-                    .offset(y: viewModel.pillsVisible ? 0 : -52)
-                    .opacity(viewModel.pillsVisible ? 1.0 : 0.0)
-                    .animation(
-                        .spring(response: 0.45, dampingFraction: 0.82),
-                        value: viewModel.pillsVisible
-                    )
-                    .frame(height: viewModel.pillsVisible ? 52 : 0, alignment: .top)
-                    .clipped()
+                // Pills using native iOS transition
+                if viewModel.pillsVisible {
+                    PillsRowView(viewModel: viewModel)
+                        .frame(height: 52)
+                        .transition(.move(edge: .top).combined(with: .opacity))
 
-                // Bottom padding
-                Spacer().frame(height: viewModel.pillsVisible ? 8 : 0)
-                    .animation(
-                        .spring(response: 0.45, dampingFraction: 0.82),
-                        value: viewModel.pillsVisible
-                    )
+                    Spacer().frame(height: 8)
+                }
             }
         }
         .background(
