@@ -12,10 +12,10 @@ struct HeaderView: View {
             // Pills — animate height, no own background
             VStack(spacing: 0) {
                 PillsRowView(viewModel: viewModel)
-                    .frame(height: 52)
+                    .frame(height: 48)
                 Spacer().frame(height: 8)
             }
-            .frame(height: viewModel.pillsVisible ? 60 : 0, alignment: .top)
+            .frame(height: viewModel.pillsVisible ? 56 : 0, alignment: .top)
             .clipped()
         }
         .background(

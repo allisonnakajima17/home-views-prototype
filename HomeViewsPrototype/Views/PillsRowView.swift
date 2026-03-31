@@ -20,9 +20,9 @@ struct PillsRowView: View {
             Spacer()
         }
         .padding(.horizontal, 16)
-        .padding(.top, 12)
+        .padding(.top, 8)
         .padding(.bottom, 0)
-        .frame(height: 52)
+        .frame(height: 48)
     }
 }
 

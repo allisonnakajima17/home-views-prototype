@@ -150,9 +150,9 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
     }
 
     private func injectTopPadding(into webView: WKWebView) {
-        // Calculate real top padding: safe area + nav (44) + pills (52) + spacing (8)
+        // Calculate real top padding: safe area + nav (44) + pills (48) + spacing (8)
         let safeTop = webView.safeAreaInsets.top
-        let totalPadding = safeTop + 44 + 52 + 8
+        let totalPadding = safeTop + 44 + 48 + 8
         let js = """
         (function() {
             var css = document.createElement('style');
