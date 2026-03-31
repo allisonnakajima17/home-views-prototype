@@ -1,0 +1,74 @@
+import SwiftUI
+
+struct HeaderView: View {
+    @Bindable var viewModel: AppViewModel
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.theme) private var theme
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Safe area spacer
+            Color.clear
+                .frame(height: 0)
+                .safeAreaInset(edge: .top) { Color.clear.frame(height: 0) }
+
+            // Header content
+            VStack(spacing: 0) {
+                NavBarView()
+
+                // Pills with animated show/hide
+                PillsRowView(viewModel: viewModel)
+                    .frame(height: viewModel.pillsVisible ? 52 : 0, alignment: .top)
+                    .scaleEffect(viewModel.pillsVisible ? 1.0 : 0.95, anchor: .top)
+                    .opacity(viewModel.pillsVisible ? 1.0 : 0.0)
+                    .clipped()
+                    .animation(
+                        viewModel.pillsVisible
+                            ? .spring(
+                                Spring(mass: 1.0, stiffness: 80, damping: 12)
+                              )
+                            : .easeOut(duration: 0.2),
+                        value: viewModel.pillsVisible
+                    )
+
+                // Bottom padding
+                Spacer().frame(height: 8)
+            }
+        }
+        .background(
+            ZStack {
+                // Blur layer
+                VariableBlurView()
+                    .opacity(viewModel.blurOpacity)
+
+                // Fog layer
+                (colorScheme == .dark ? Color.black : Color.white)
+                    .opacity(0.3)
+
+                // Tint gradient
+                ForEach(Tab.allCases) { tab in
+                    if let tintColor = tab.tintColor {
+                        LinearGradient(
+                            colors: [tintColor.opacity(0.12), tintColor.opacity(0)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                        .opacity(viewModel.selectedTab == tab ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.25), value: viewModel.selectedTab)
+                    }
+                }
+            }
+            .ignoresSafeArea(edges: .top)
+        )
+    }
+}
+
+// UIVisualEffectView wrapper for proper frosted glass blur
+struct VariableBlurView: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIVisualEffectView {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterial))
+        return view
+    }
+
+    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
+}
