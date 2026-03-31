@@ -20,34 +20,32 @@ struct ContentView: View {
             if viewModel.selectedTab == .following {
                 (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
                     .ignoresSafeArea()
+                    .allowsHitTesting(false)
 
-                ScrollView {
-                    VStack(spacing: 0) {
-                        TeamTilesRow(viewModel: viewModel)
-                        SAAGCarousel()
-                        Image("FollowingFeedPlaceholder")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: .infinity)
-                    }
+                VStack(spacing: 0) {
+                    TeamTilesRow(viewModel: viewModel)
+                    SAAGCarousel()
+                    Image("FollowingFeedPlaceholder")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
                 }
-                .offset(y: headerHeight)
-                .ignoresSafeArea(edges: .bottom)
+                .offset(y: headerHeight - viewModel.nativeScrollOffset)
+                .allowsHitTesting(false)
             }
 
             // Trending tab overlay — placeholder feed
             if viewModel.selectedTab == .trending {
                 (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
                     .ignoresSafeArea()
+                    .allowsHitTesting(false)
 
-                ScrollView {
-                    Image("TrendingFeedPlaceholder")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                }
-                .offset(y: headerHeight)
-                .ignoresSafeArea(edges: .bottom)
+                Image("TrendingFeedPlaceholder")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                    .offset(y: headerHeight - viewModel.nativeScrollOffset)
+                    .allowsHitTesting(false)
             }
 
             HeaderView(viewModel: viewModel)
