@@ -7,50 +7,50 @@ struct HeaderView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Safe area spacer
-            Color.clear
-                .frame(height: 0)
-                .safeAreaInset(edge: .top) { Color.clear.frame(height: 0) }
+            // Nav bar — always visible, always has background
+            NavBarView()
+                .background(
+                    headerBackground
+                        .ignoresSafeArea(edges: .top)
+                )
 
-            // Header content
+            // Pills — animate independently, own background extends behind
             VStack(spacing: 0) {
-                NavBarView()
+                PillsRowView(viewModel: viewModel)
+                    .frame(height: 52)
+                Spacer().frame(height: 8)
+            }
+            .frame(height: viewModel.pillsVisible ? 60 : 0, alignment: .top)
+            .clipped()
+            .background(
+                headerBackground
+            )
+        }
+    }
 
-                // Pills clipped reveal — no fade, no bleed
-                VStack(spacing: 0) {
-                    PillsRowView(viewModel: viewModel)
-                        .frame(height: 52)
-                    Spacer().frame(height: 8)
+    private var headerBackground: some View {
+        ZStack {
+            // Blur layer
+            VariableBlurView()
+                .opacity(viewModel.blurOpacity)
+
+            // Fog layer
+            (colorScheme == .dark ? Color.black : Color.white)
+                .opacity(0.3)
+
+            // Tint gradient
+            ForEach(Tab.allCases) { tab in
+                if let tintColor = tab.tintColor {
+                    LinearGradient(
+                        colors: [tintColor.opacity(0.12), tintColor.opacity(0)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .opacity(viewModel.selectedTab == tab ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.25), value: viewModel.selectedTab)
                 }
-                .frame(height: viewModel.pillsVisible ? 60 : 0, alignment: .top)
-                .clipped()
             }
         }
-        .background(
-            ZStack {
-                // Blur layer
-                VariableBlurView()
-                    .opacity(viewModel.blurOpacity)
-
-                // Fog layer
-                (colorScheme == .dark ? Color.black : Color.white)
-                    .opacity(0.3)
-
-                // Tint gradient
-                ForEach(Tab.allCases) { tab in
-                    if let tintColor = tab.tintColor {
-                        LinearGradient(
-                            colors: [tintColor.opacity(0.12), tintColor.opacity(0)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                        .opacity(viewModel.selectedTab == tab ? 1 : 0)
-                        .animation(.easeInOut(duration: 0.25), value: viewModel.selectedTab)
-                    }
-                }
-            }
-            .ignoresSafeArea(edges: .top)
-        )
     }
 }
 
