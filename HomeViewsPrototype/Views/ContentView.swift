@@ -35,6 +35,21 @@ struct ContentView: View {
                 .ignoresSafeArea(edges: .bottom)
             }
 
+            // Trending tab overlay — placeholder feed
+            if viewModel.selectedTab == .trending {
+                (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
+                    .ignoresSafeArea()
+
+                ScrollView {
+                    Image("TrendingFeedPlaceholder")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                }
+                .offset(y: headerHeight)
+                .ignoresSafeArea(edges: .bottom)
+            }
+
             HeaderView(viewModel: viewModel)
         }
         .overlay {
