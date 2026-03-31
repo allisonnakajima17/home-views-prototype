@@ -43,11 +43,13 @@ private struct PillButton: View {
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 14, height: 14)
+                        .transition(.opacity.combined(with: .scale(scale: 0.5)))
                 }
                 Text(label)
                     .font(.custom("TTNormsPro-DemiBold", size: 14))
                     .lineLimit(1)
             }
+            .animation(.easeInOut(duration: 0.2), value: isSelected)
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
             .foregroundColor(isSelected ? theme.surfacePrimary : theme.textPrimary)
