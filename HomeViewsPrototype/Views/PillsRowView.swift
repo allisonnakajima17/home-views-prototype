@@ -43,7 +43,7 @@ private struct PillButton: View {
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 14, height: 14)
-                        .foregroundColor(isSelected ? theme.surfacePrimary : (isDark ? Color(hex: 0xC8C8C8) : Color(hex: 0x5F5F5F)))
+                        .foregroundColor(isSelected ? (isDark ? .black : theme.surfacePrimary) : (isDark ? Color(hex: 0xC8C8C8) : Color(hex: 0x5F5F5F)))
                 }
                 Text(label)
                     .font(.custom("TTNormsPro-DemiBold", size: 14))
@@ -51,11 +51,15 @@ private struct PillButton: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
-            .foregroundColor(isSelected ? theme.surfacePrimary : (isDark ? .white : theme.textPrimary))
+            .foregroundColor(
+                isSelected
+                    ? (isDark ? .black : theme.surfacePrimary)
+                    : (isDark ? .white : theme.textPrimary)
+            )
             .background(
                 Capsule().fill(
                     isSelected
-                        ? theme.textPrimary
+                        ? (isDark ? Color(hex: 0xF2F2F2) : theme.textPrimary)
                         : (isDark ? Color(hex: 0x333333) : Color(hex: 0xF2F2F2))
                 )
             )
