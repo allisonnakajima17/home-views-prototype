@@ -16,10 +16,13 @@ struct ContentView: View {
             WebViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
 
-            // Team tiles — scrolls with feed using native scroll offset
+            // Following tab overlay — tiles + SAAG carousel, scroll with feed
             if viewModel.selectedTab == .following {
-                TeamTilesRow(viewModel: viewModel)
-                    .offset(y: headerHeight - viewModel.nativeScrollOffset)
+                VStack(spacing: 0) {
+                    TeamTilesRow(viewModel: viewModel)
+                    SAAGCarousel()
+                }
+                .offset(y: headerHeight - viewModel.nativeScrollOffset)
             }
 
             HeaderView(viewModel: viewModel)
