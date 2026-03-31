@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = AppViewModel()
+    @State private var showAltCarousel = false
     @Environment(\.theme) private var theme
     @Environment(\.colorScheme) private var colorScheme
 
@@ -27,7 +28,7 @@ struct ContentView: View {
 
                     VStack(spacing: 0) {
                         TeamTilesRow(viewModel: viewModel)
-                        SAAGCarousel()
+                        SAAGCarousel(showAlt: showAltCarousel)
                             .allowsHitTesting(false)
                         Image("FollowingFeedPlaceholder")
                             .resizable()
@@ -60,6 +61,30 @@ struct ContentView: View {
             }
 
             HeaderView(viewModel: viewModel)
+
+            // Floating carousel swap button — bottom right
+            if viewModel.selectedTab == .following {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                showAltCarousel.toggle()
+                            }
+                        } label: {
+                            Image(systemName: "arrow.triangle.2.circlepath")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.secondary)
+                                .frame(width: 36, height: 36)
+                                .background(.ultraThinMaterial)
+                                .clipShape(Circle())
+                        }
+                        .padding(.trailing, 16)
+                        .padding(.bottom, 24)
+                    }
+                }
+            }
         }
         .overlay {
             // Full-screen team screen — slides from right
