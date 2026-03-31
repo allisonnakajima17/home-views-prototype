@@ -16,6 +16,7 @@ struct SAAGCarousel: View {
             }
             .padding(.horizontal, 16)
         }
-        .padding(.vertical, 4)
+        .padding(.top, 4)
+        .padding(.bottom, 8)
     }
 }
