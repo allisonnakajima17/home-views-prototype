@@ -18,7 +18,7 @@ enum Tab: Int, CaseIterable, Identifiable {
     var tintRGB: (r: Double, g: Double, b: Double)? {
         switch self {
         case .forYou: return (0, 74, 206)
-        case .following: return nil
+        case .following: return (232, 74, 39) // Illinois #E84A27
         case .trending: return (5, 150, 70)
         }
     }
