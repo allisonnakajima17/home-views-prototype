@@ -16,11 +16,13 @@ struct ContentView: View {
             WebViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
 
-            // Team tiles — sits above feed content, scrolls with it
+            // Team tiles — fixed below header on Following tab
             if viewModel.selectedTab == .following {
-                TeamTilesRow()
-                    .offset(y: headerHeight - viewModel.scrollOffset)
-                    .animation(.none, value: viewModel.scrollOffset)
+                VStack {
+                    Spacer().frame(height: headerHeight)
+                    TeamTilesRow()
+                    Spacer()
+                }
             }
 
             HeaderView(viewModel: viewModel)
