@@ -17,6 +17,7 @@ struct PillsRowView: View {
                     viewModel.selectTab(tab)
                 }
             }
+            Spacer()
         }
         .padding(.horizontal, 16)
         .padding(.top, 12)
