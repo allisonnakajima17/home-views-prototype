@@ -42,10 +42,7 @@ private struct PillButton: View {
                     Image(icon)
                         .resizable()
                         .renderingMode(.template)
-                        .frame(width: isSelected ? 14 : 0, height: 14)
-                        .opacity(isSelected ? 1 : 0)
-                        .scaleEffect(isSelected ? 1 : 0.5)
-                        .animation(.easeInOut(duration: 0.2), value: isSelected)
+                        .frame(width: 14, height: 14)
                 }
                 Text(label)
                     .font(.custom("TTNormsPro-DemiBold", size: 14))
