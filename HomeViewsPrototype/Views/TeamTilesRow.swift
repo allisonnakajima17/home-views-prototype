@@ -7,7 +7,7 @@ struct TeamTile: Identifiable {
 }
 
 struct TeamTilesRow: View {
-    @State private var selectedScreen: TeamTile?
+    @Bindable var viewModel: AppViewModel
 
     private let tiles = [
         TeamTile(id: "illinois", tileImage: "TeamTileIllinois", screenImage: "ScreenIllinois"),
@@ -21,7 +21,9 @@ struct TeamTilesRow: View {
             ForEach(tiles) { tile in
                 Button {
                     if tile.screenImage != nil {
-                        selectedScreen = tile
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            viewModel.selectedTeamScreen = tile
+                        }
                     }
                 } label: {
                     Image(tile.tileImage)
@@ -35,13 +37,6 @@ struct TeamTilesRow: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
-        .fullScreenCover(item: $selectedScreen) { tile in
-            if let screenImage = tile.screenImage {
-                TeamScreenView(imageName: screenImage) {
-                    selectedScreen = nil
-                }
-            }
-        }
     }
 }
 

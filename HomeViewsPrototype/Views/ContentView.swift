@@ -18,11 +18,23 @@ struct ContentView: View {
 
             // Team tiles — scrolls with feed using native scroll offset
             if viewModel.selectedTab == .following {
-                TeamTilesRow()
+                TeamTilesRow(viewModel: viewModel)
                     .offset(y: headerHeight - viewModel.nativeScrollOffset)
             }
 
             HeaderView(viewModel: viewModel)
+
+            // Full-screen team screen — slides from right
+            if let tile = viewModel.selectedTeamScreen, let screenImage = tile.screenImage {
+                TeamScreenView(imageName: screenImage) {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        viewModel.selectedTeamScreen = nil
+                    }
+                }
+                .ignoresSafeArea()
+                .transition(.move(edge: .trailing))
+                .zIndex(10)
+            }
         }
     }
 }

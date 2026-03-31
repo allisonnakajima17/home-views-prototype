@@ -4,6 +4,7 @@ import UIKit
 @Observable
 final class AppViewModel {
     var selectedTab: Tab = .forYou
+    var selectedTeamScreen: TeamTile?
     var scrollOffset: CGFloat = 0
     var nativeScrollOffset: CGFloat = 0
     var pillsVisible: Bool = true
