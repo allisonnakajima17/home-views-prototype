@@ -29,7 +29,7 @@ struct TeamTilesRow: View {
                     Image(tile.tileImage)
                         .resizable()
                         .aspectRatio(1, contentMode: .fit)
-                        .frame(width: 56, height: 56)
+                        .frame(width: 72, height: 72)
                 }
                 .buttonStyle(.plain)
             }
