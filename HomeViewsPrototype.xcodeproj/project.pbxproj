@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10001 /* HomeViewsPrototypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001; };
-		A10002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002; };
-		A10003 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003; };
-		A10004 /* NavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004; };
-		A10005 /* PillsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005; };
-		A10006 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006; };
-		A10007 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007; };
-		A10008 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008; };
-		A10009 /* WebViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009; };
-		A10010 /* WebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010; };
-		A10011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10011; };
-		A10012 /* TTNormsPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10012; };
-		A10013 /* TTNormsPro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10013; };
-		A10014 /* TTNormsPro-DemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10014; };
-		A10015 /* TTNormsPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10015; };
+		A10001 /* HomeViewsPrototypeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001 /* HomeViewsPrototypeApp.swift */; };
+		A10002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002 /* ContentView.swift */; };
+		A10003 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* HeaderView.swift */; };
+		A10004 /* NavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004 /* NavBarView.swift */; };
+		A10005 /* PillsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005 /* PillsRowView.swift */; };
+		A10006 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006 /* Tab.swift */; };
+		A10007 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007 /* Theme.swift */; };
+		A10008 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008 /* AppViewModel.swift */; };
+		A10009 /* WebViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009 /* WebViewRepresentable.swift */; };
+		A10010 /* WebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010 /* WebViewCoordinator.swift */; };
+		A10011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10011 /* Assets.xcassets */; };
+		A10012 /* TTNormsPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10012 /* TTNormsPro-Regular.otf */; };
+		A10013 /* TTNormsPro-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10013 /* TTNormsPro-Medium.otf */; };
+		A10014 /* TTNormsPro-DemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10014 /* TTNormsPro-DemiBold.otf */; };
+		A10015 /* TTNormsPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10015 /* TTNormsPro-Bold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -147,7 +147,7 @@
 /* Begin PBXNativeTarget section */
 		E10001 /* HomeViewsPrototype */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F10003;
+			buildConfigurationList = F10003 /* Build configuration list for PBXNativeTarget "HomeViewsPrototype" */;
 			buildPhases = (
 				C10002 /* Sources */,
 				C10001 /* Frameworks */,
@@ -177,7 +177,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F10001;
+			buildConfigurationList = F10001 /* Build configuration list for PBXProject "HomeViewsPrototype" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -291,15 +291,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W4R4YW92TX;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = HomeViewsPrototype/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Home Views Prototype";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -321,15 +321,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = W4R4YW92TX;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = HomeViewsPrototype/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Home Views Prototype";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -367,7 +367,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
 	rootObject = D10000 /* Project object */;
 }
