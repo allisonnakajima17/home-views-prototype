@@ -23,20 +23,22 @@ struct ContentView: View {
 
                     (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
                         .ignoresSafeArea()
+                        .allowsHitTesting(false)
 
                     VStack(spacing: 0) {
                         TeamTilesRow(viewModel: viewModel)
                         SAAGCarousel()
+                            .allowsHitTesting(false)
                         Image("FollowingFeedPlaceholder")
                             .resizable()
                             .scaledToFill()
                             .frame(width: w)
                             .clipped()
+                            .allowsHitTesting(false)
                     }
                     .frame(width: w, alignment: .top)
                     .offset(y: headerHeight - viewModel.nativeScrollOffset)
                 }
-                .allowsHitTesting(false)
             }
 
             // Trending tab overlay — placeholder feed
