@@ -16,6 +16,7 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
     // MARK: - Tab Switching
 
     func switchToTab(_ tab: Tab) {
+        updateTopPadding(for: tab)
         let js = """
         (function() {
             var labels = ['for you', 'following', 'trending'];
@@ -150,20 +151,13 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
     }
 
     private func injectTopPadding(into webView: WKWebView) {
-        // Calculate real top padding: safe area + nav (44) + pills (48) + spacing (8)
-        let safeTop = webView.safeAreaInsets.top
-        let totalPadding = safeTop + 44 + 48 + 8
+        updateTopPadding(for: viewModel.selectedTab)
         let js = """
         (function() {
             var css = document.createElement('style');
-            css.id = '__nativeTopPadding';
-            if (document.getElementById('__nativeTopPadding')) {
-                document.getElementById('__nativeTopPadding').remove();
-            }
+            css.id = '__nativeDarkMode';
+            if (document.getElementById('__nativeDarkMode')) return;
             css.textContent = `
-                body {
-                    padding-top: \(Int(totalPadding))px !important;
-                }
                 @media (prefers-color-scheme: dark) {
                     html, body, #__next, .feed-container {
                         background-color: #212121 !important;
@@ -171,6 +165,30 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
                 }
             `;
             document.head.appendChild(css);
+        })();
+        """
+        webView.evaluateJavaScript(js)
+    }
+
+    func updateTopPadding(for tab: Tab) {
+        guard let webView else { return }
+        let safeTop = webView.safeAreaInsets.top
+        // nav (44) + pills (48) + spacing (8) + team tiles on Following (56 + 16 padding)
+        let tilesHeight: CGFloat = tab == .following ? 72 : 0
+        let totalPadding = safeTop + 44 + 48 + 8 + tilesHeight
+        let js = """
+        (function() {
+            var css = document.getElementById('__nativeTopPadding');
+            if (!css) {
+                css = document.createElement('style');
+                css.id = '__nativeTopPadding';
+                document.head.appendChild(css);
+            }
+            css.textContent = `
+                body {
+                    padding-top: \(Int(totalPadding))px !important;
+                }
+            `;
         })();
         """
         webView.evaluateJavaScript(js)
