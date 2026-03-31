@@ -13,7 +13,7 @@ struct TeamTilesRow: View {
         TeamTile(id: "illinois", tileImage: "TeamTileIllinois", screenImage: "ScreenIllinois"),
         TeamTile(id: "bears", tileImage: "TeamTileChicagoBears", screenImage: "ScreenBears"),
         TeamTile(id: "lafc", tileImage: "TeamTileLAFC", screenImage: "ScreenLAFC"),
-        TeamTile(id: "add", tileImage: "TeamTileAdd", screenImage: nil),
+        TeamTile(id: "add", tileImage: "TeamTileAdd", screenImage: "ScreenAdd"),
     ]
 
     var body: some View {
