@@ -17,6 +17,11 @@ struct HeaderView: View {
             }
             .frame(height: viewModel.pillsVisible ? 56 : 0, alignment: .top)
             .clipped()
+
+            // Team tiles — only on Following tab
+            if viewModel.selectedTab == .following {
+                TeamTilesRow()
+            }
         }
         .background(
             ZStack {
