@@ -1,6 +1,6 @@
 import WebKit
 
-final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
+final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDelegate, UIScrollViewDelegate {
     private let viewModel: AppViewModel
     private weak var webView: WKWebView?
 
@@ -58,6 +58,14 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
 
         Task { @MainActor in
             viewModel.handleScrollUpdate(offset: offset)
+        }
+    }
+
+    // MARK: - UIScrollViewDelegate
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        Task { @MainActor in
+            viewModel.nativeScrollOffset = scrollView.contentOffset.y
         }
     }
 

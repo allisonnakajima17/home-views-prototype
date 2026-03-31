@@ -16,13 +16,10 @@ struct ContentView: View {
             WebViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
 
-            // Team tiles — fixed below header on Following tab
+            // Team tiles — scrolls with feed using native scroll offset
             if viewModel.selectedTab == .following {
-                VStack {
-                    Spacer().frame(height: headerHeight)
-                    TeamTilesRow()
-                    Spacer()
-                }
+                TeamTilesRow()
+                    .offset(y: headerHeight - viewModel.nativeScrollOffset)
             }
 
             HeaderView(viewModel: viewModel)
