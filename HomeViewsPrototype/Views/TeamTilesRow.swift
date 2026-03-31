@@ -37,7 +37,7 @@ struct TeamTilesRow: View {
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)
-        .padding(.bottom, 16)
+        .padding(.bottom, 20)
     }
 }
 
