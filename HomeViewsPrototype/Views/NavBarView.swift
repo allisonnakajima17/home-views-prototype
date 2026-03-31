@@ -6,7 +6,7 @@ struct NavBarView: View {
 
     var body: some View {
         HStack {
-            CBSLogoView(color: theme.textPrimary)
+            CBSLogoView(color: colorScheme == .dark ? .white : Color(hex: 0x004ACE))
                 .frame(width: 120, height: 14)
 
             Spacer()
