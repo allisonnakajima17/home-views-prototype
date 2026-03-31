@@ -43,6 +43,7 @@ private struct PillButton: View {
                         .resizable()
                         .renderingMode(.template)
                         .frame(width: 14, height: 14)
+                        .foregroundColor(isSelected ? theme.surfacePrimary : Color(hex: 0x5F5F5F))
                 }
                 Text(label)
                     .font(.custom("TTNormsPro-DemiBold", size: 14))
