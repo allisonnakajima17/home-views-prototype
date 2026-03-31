@@ -18,34 +18,43 @@ struct ContentView: View {
 
             // Following tab overlay — tiles + SAAG carousel + placeholder feed
             if viewModel.selectedTab == .following {
-                (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
-                    .ignoresSafeArea()
-                    .allowsHitTesting(false)
+                GeometryReader { geo in
+                    let w = geo.size.width
+                    Color.clear.ignoresSafeArea()
+                        .background(colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
+                        .ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    TeamTilesRow(viewModel: viewModel)
-                    SAAGCarousel()
-                    Image("FollowingFeedPlaceholder")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
+                    VStack(spacing: 0) {
+                        TeamTilesRow(viewModel: viewModel)
+                        SAAGCarousel()
+                        Image("FollowingFeedPlaceholder")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: w)
+                            .clipped()
+                    }
+                    .frame(width: w)
+                    .offset(y: headerHeight - viewModel.nativeScrollOffset)
                 }
-                .offset(y: headerHeight - viewModel.nativeScrollOffset)
                 .allowsHitTesting(false)
             }
 
             // Trending tab overlay — placeholder feed
             if viewModel.selectedTab == .trending {
-                (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
-                    .ignoresSafeArea()
-                    .allowsHitTesting(false)
+                GeometryReader { geo in
+                    let w = geo.size.width
+                    Color.clear.ignoresSafeArea()
+                        .background(colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
+                        .ignoresSafeArea()
 
-                Image("TrendingFeedPlaceholder")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .offset(y: headerHeight - viewModel.nativeScrollOffset)
-                    .allowsHitTesting(false)
+                    Image("TrendingFeedPlaceholder")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: w)
+                        .clipped()
+                        .offset(y: headerHeight - viewModel.nativeScrollOffset)
+                }
+                .allowsHitTesting(false)
             }
 
             HeaderView(viewModel: viewModel)
