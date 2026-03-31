@@ -51,7 +51,7 @@ private struct PillButton: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
-            .foregroundColor(isSelected ? theme.surfacePrimary : theme.textPrimary)
+            .foregroundColor(isSelected ? theme.surfacePrimary : (isDark ? .white : theme.textPrimary))
             .background(
                 Capsule().fill(
                     isSelected
