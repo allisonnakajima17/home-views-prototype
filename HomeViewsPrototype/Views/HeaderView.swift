@@ -16,21 +16,24 @@ struct HeaderView: View {
             VStack(spacing: 0) {
                 NavBarView()
 
-                // Pills with bouncy spring show, quick hide
+                // Pills slide in/out vertically
                 PillsRowView(viewModel: viewModel)
-                    .frame(height: viewModel.pillsVisible ? 52 : 0, alignment: .top)
-                    .scaleEffect(viewModel.pillsVisible ? 1.0 : 0.9, anchor: .top)
+                    .frame(height: 52)
+                    .offset(y: viewModel.pillsVisible ? 0 : -52)
                     .opacity(viewModel.pillsVisible ? 1.0 : 0.0)
-                    .clipped()
                     .animation(
-                        viewModel.pillsVisible
-                            ? .spring(response: 0.35, dampingFraction: 0.65)
-                            : .easeOut(duration: 0.15),
+                        .spring(response: 0.45, dampingFraction: 0.82),
                         value: viewModel.pillsVisible
                     )
+                    .frame(height: viewModel.pillsVisible ? 52 : 0, alignment: .top)
+                    .clipped()
 
                 // Bottom padding
-                Spacer().frame(height: 8)
+                Spacer().frame(height: viewModel.pillsVisible ? 8 : 0)
+                    .animation(
+                        .spring(response: 0.45, dampingFraction: 0.82),
+                        value: viewModel.pillsVisible
+                    )
             }
         }
         .background(

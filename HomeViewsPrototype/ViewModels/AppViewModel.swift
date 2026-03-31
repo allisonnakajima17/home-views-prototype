@@ -58,8 +58,8 @@ final class AppViewModel {
 
         let accumulated = abs(offset - directionAnchor)
 
-        // Small threshold so it reacts quickly
-        if accumulated > 5 {
+        // Small threshold — responsive but avoids jitter
+        if accumulated > 8 {
             let shouldShow = currentDirection == .up
             if shouldShow != pillsVisible {
                 pillsVisible = shouldShow
