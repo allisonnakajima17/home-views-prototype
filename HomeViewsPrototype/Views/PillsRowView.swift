@@ -38,18 +38,19 @@ private struct PillButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
-                if let icon, isSelected {
+                if let icon {
                     Image(icon)
                         .resizable()
                         .renderingMode(.template)
-                        .frame(width: 14, height: 14)
-                        .transition(.opacity.combined(with: .scale(scale: 0.5)))
+                        .frame(width: isSelected ? 14 : 0, height: 14)
+                        .opacity(isSelected ? 1 : 0)
+                        .scaleEffect(isSelected ? 1 : 0.5)
+                        .animation(.easeInOut(duration: 0.2), value: isSelected)
                 }
                 Text(label)
                     .font(.custom("TTNormsPro-DemiBold", size: 14))
                     .lineLimit(1)
             }
-            .animation(.easeInOut(duration: 0.2), value: isSelected)
             .padding(.vertical, 8)
             .padding(.horizontal, 16)
             .foregroundColor(isSelected ? theme.surfacePrimary : theme.textPrimary)
