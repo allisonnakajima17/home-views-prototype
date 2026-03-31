@@ -25,8 +25,10 @@ final class AppViewModel {
 
     func selectTab(_ tab: Tab) {
         guard tab != selectedTab else { return }
-        selectedTab = tab
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.88)) { pillsVisible = true }
+        withAnimation(.easeInOut(duration: 0.2)) {
+            selectedTab = tab
+            pillsVisible = true
+        }
         UISelectionFeedbackGenerator().selectionChanged()
         webCoordinator?.switchToTab(tab)
     }
