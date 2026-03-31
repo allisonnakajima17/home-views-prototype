@@ -29,7 +29,11 @@ struct TeamTilesRow: View {
                     Image(tile.tileImage)
                         .resizable()
                         .aspectRatio(1, contentMode: .fit)
-                        .frame(width: 56, height: 56)
+                        // HACK: Team tile PDFs include drop shadow in canvas, so 64px
+                        // compensates for the shadow padding to visually match the 56px Add tile.
+                        // Proper fix: re-export PDFs without shadow baked in.
+                        .frame(width: tile.screenImage != nil ? 64 : 56,
+                               height: tile.screenImage != nil ? 64 : 56)
                 }
                 .buttonStyle(.plain)
             }
