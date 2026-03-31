@@ -27,7 +27,7 @@ struct WebViewRepresentable: UIViewRepresentable {
 
         context.coordinator.setWebView(webView)
 
-        if let url = URL(string: "https://fauxpamine-ui.dev.cms.cbssports.cloud/?team_ids=21190") {
+        if let url = URL(string: "https://fauxpamine-ui.dev.cms.cbssports.cloud/?team_ids=21190,409,2911293") {
             webView.load(URLRequest(url: url))
         }
 
