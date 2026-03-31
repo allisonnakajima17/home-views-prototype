@@ -76,9 +76,9 @@ struct ContentView: View {
                         } label: {
                             Image(systemName: "arrow.triangle.2.circlepath")
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.white)
                                 .frame(width: 36, height: 36)
-                                .background(.ultraThinMaterial)
+                                .background(Color(red: 0, green: 122/255, blue: 1))
                                 .clipShape(Circle())
                         }
                         .padding(.trailing, 16)
