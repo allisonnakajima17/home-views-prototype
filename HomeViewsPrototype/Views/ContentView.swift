@@ -16,11 +16,15 @@ struct ContentView: View {
             WebViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
 
-            // Following tab overlay — tiles + SAAG carousel, scroll with feed
+            // Following tab overlay — tiles + SAAG carousel + placeholder feed
             if viewModel.selectedTab == .following {
                 VStack(spacing: 0) {
                     TeamTilesRow(viewModel: viewModel)
                     SAAGCarousel()
+                    Image("FollowingFeedPlaceholder")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity)
                 }
                 .offset(y: headerHeight - viewModel.nativeScrollOffset)
             }
