@@ -181,8 +181,8 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
     func updateTopPadding(for tab: Tab) {
         guard let webView else { return }
         let safeTop = webView.safeAreaInsets.top
-        // nav (44) + pills (48) + spacing (8) + Following extras (tiles 80 + carousel ~110)
-        let followingExtras: CGFloat = tab == .following ? 190 : 0
+        // nav (44) + pills (48) + spacing (8) + Following extras (tiles 80 + carousel ~120)
+        let followingExtras: CGFloat = tab == .following ? 220 : 0
         let totalPadding = safeTop + 44 + 48 + 8 + followingExtras
         let js = """
         (function() {
