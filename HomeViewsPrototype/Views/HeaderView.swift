@@ -41,19 +41,15 @@ struct HeaderView: View {
                     }
                 }
 
-                // Bottom fade to surface color — eliminates hard edge
-                VStack {
-                    Spacer()
-                    LinearGradient(
-                        colors: [
-                            theme.surfacePrimary.opacity(0),
-                            theme.surfacePrimary
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    .frame(height: 20)
-                }
+                // Gradual fade to surface color across full header
+                LinearGradient(
+                    colors: [
+                        theme.surfacePrimary.opacity(0),
+                        theme.surfacePrimary
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
             }
             .ignoresSafeArea(edges: .top)
         )
