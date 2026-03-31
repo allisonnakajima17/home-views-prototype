@@ -6,25 +6,25 @@ struct HeaderView: View {
     @Environment(\.theme) private var theme
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Nav bar — always visible, always has background
-            NavBarView()
-                .background(
-                    headerBackground
-                        .ignoresSafeArea(edges: .top)
-                )
+        ZStack(alignment: .top) {
+            // Full-width background that always covers nav + pills area
+            headerBackground
+                .frame(height: 104) // safe area handled by ignoresSafeArea
+                .ignoresSafeArea(edges: .top)
 
-            // Pills — animate independently, own background extends behind
+            // Content on top
             VStack(spacing: 0) {
-                PillsRowView(viewModel: viewModel)
-                    .frame(height: 52)
-                Spacer().frame(height: 8)
+                NavBarView()
+
+                // Pills — animate height independently
+                VStack(spacing: 0) {
+                    PillsRowView(viewModel: viewModel)
+                        .frame(height: 52)
+                    Spacer().frame(height: 8)
+                }
+                .frame(height: viewModel.pillsVisible ? 60 : 0, alignment: .top)
+                .clipped()
             }
-            .frame(height: viewModel.pillsVisible ? 60 : 0, alignment: .top)
-            .clipped()
-            .background(
-                headerBackground
-            )
         }
     }
 
