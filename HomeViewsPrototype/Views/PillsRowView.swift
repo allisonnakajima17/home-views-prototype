@@ -39,7 +39,7 @@ private struct PillButton: View {
                 .font(.custom("TTNormsPro-DemiBold", size: 14))
                 .lineLimit(1)
                 .padding(.vertical, 8)
-                .padding(.horizontal, 12)
+                .padding(.horizontal, 16)
                 .foregroundColor(isSelected ? theme.surfacePrimary : theme.textPrimary)
                 .background(
                     Capsule().fill(
