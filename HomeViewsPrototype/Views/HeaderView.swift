@@ -16,12 +16,18 @@ struct HeaderView: View {
             VStack(spacing: 0) {
                 NavBarView()
 
-                // Pills driven directly by scroll position
+                // Pills with bouncy spring show, quick hide
                 PillsRowView(viewModel: viewModel)
-                    .frame(height: 52 * viewModel.pillsProgress, alignment: .top)
-                    .scaleEffect(0.95 + 0.05 * viewModel.pillsProgress, anchor: .top)
-                    .opacity(viewModel.pillsProgress)
+                    .frame(height: viewModel.pillsVisible ? 52 : 0, alignment: .top)
+                    .scaleEffect(viewModel.pillsVisible ? 1.0 : 0.9, anchor: .top)
+                    .opacity(viewModel.pillsVisible ? 1.0 : 0.0)
                     .clipped()
+                    .animation(
+                        viewModel.pillsVisible
+                            ? .spring(response: 0.35, dampingFraction: 0.65)
+                            : .easeOut(duration: 0.15),
+                        value: viewModel.pillsVisible
+                    )
 
                 // Bottom padding
                 Spacer().frame(height: 8)

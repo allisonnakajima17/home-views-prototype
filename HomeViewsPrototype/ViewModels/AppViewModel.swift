@@ -5,18 +5,12 @@ import UIKit
 final class AppViewModel {
     var selectedTab: Tab = .forYou
     var scrollOffset: CGFloat = 0
+    var pillsVisible: Bool = true
 
-    /// 0 = pills fully hidden, 1 = pills fully visible
-    /// Driven directly by scroll position for organic feel
-    var pillsProgress: CGFloat = 1.0
-
-    // Scroll-driven pills tracking
+    // Scroll direction tracking
     private var prevOffset: CGFloat = 0
-    private var hideAnchor: CGFloat = 0
-    private var isTracking: Bool = false
+    private var directionAnchor: CGFloat = 0
     private var lastDirection: ScrollDirection = .none
-
-    private let pillsHeight: CGFloat = 52
 
     private enum ScrollDirection {
         case up, down, none
@@ -29,14 +23,10 @@ final class AppViewModel {
         min(max(scrollOffset / 80, 0), 1)
     }
 
-    var pillsVisible: Bool {
-        pillsProgress > 0.5
-    }
-
     func selectTab(_ tab: Tab) {
         guard tab != selectedTab else { return }
         selectedTab = tab
-        pillsProgress = 1.0
+        pillsVisible = true
         UISelectionFeedbackGenerator().selectionChanged()
         webCoordinator?.switchToTab(tab)
     }
@@ -45,42 +35,35 @@ final class AppViewModel {
         scrollOffset = offset
 
         let delta = offset - prevOffset
-        let nearTop = offset < 10
+        let nearTop = offset < 5
 
-        // Always fully show near top
         if nearTop {
-            pillsProgress = 1.0
-            hideAnchor = offset
+            if !pillsVisible { pillsVisible = true }
+            directionAnchor = offset
             lastDirection = .none
             prevOffset = offset
             return
         }
 
         let currentDirection: ScrollDirection = delta > 0 ? .down : (delta < 0 ? .up : .none)
+        guard currentDirection != .none else {
+            prevOffset = offset
+            return
+        }
 
-        // When direction changes, reset the anchor
-        if currentDirection != lastDirection && currentDirection != .none {
-            hideAnchor = prevOffset
+        if currentDirection != lastDirection {
+            directionAnchor = prevOffset
             lastDirection = currentDirection
         }
 
-        let travel = offset - hideAnchor
+        let accumulated = abs(offset - directionAnchor)
 
-        if currentDirection == .down {
-            // Scrolling down: collapse pills proportionally over pillsHeight distance
-            let progress = 1.0 - min(max(travel / pillsHeight, 0), 1)
-            pillsProgress = progress
-        } else if currentDirection == .up {
-            // Scrolling up: expand pills proportionally over pillsHeight distance
-            let progress = min(max(-travel / pillsHeight, 0), 1)
-            pillsProgress = max(progress, pillsProgress)
-        }
-
-        // Snap to fully shown/hidden when close
-        if pillsProgress < 0.05 {
-            pillsProgress = 0
-        } else if pillsProgress > 0.95 {
-            pillsProgress = 1
+        // Small threshold so it reacts quickly
+        if accumulated > 5 {
+            let shouldShow = currentDirection == .up
+            if shouldShow != pillsVisible {
+                pillsVisible = shouldShow
+            }
         }
 
         prevOffset = offset
