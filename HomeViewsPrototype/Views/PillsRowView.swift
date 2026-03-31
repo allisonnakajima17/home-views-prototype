@@ -56,7 +56,7 @@ private struct PillButton: View {
                 Capsule().fill(
                     isSelected
                         ? theme.textPrimary
-                        : (isDark ? Color.white.opacity(0.1) : Color.black.opacity(0.1))
+                        : (isDark ? Color(hex: 0x333333) : Color(hex: 0xF2F2F2))
                 )
             )
         }
