@@ -18,12 +18,19 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
     func switchToTab(_ tab: Tab) {
         let js = """
         (function() {
-            var tabs = document.querySelectorAll('nav a, nav button, [role="tab"], [data-tab]');
-            var labels = ['\(Tab.forYou.label)', '\(Tab.following.label)', '\(Tab.trending.label)'];
+            var labels = ['for you', 'following', 'trending'];
             var target = labels[\(tab.rawValue)];
-            for (var i = 0; i < tabs.length; i++) {
-                if (tabs[i].textContent.trim() === target) {
-                    tabs[i].click();
+            // Search all clickable elements for matching text
+            var candidates = document.querySelectorAll('a, button, [role="tab"], [data-tab], span, div[onclick], li');
+            for (var i = 0; i < candidates.length; i++) {
+                var el = candidates[i];
+                var text = el.textContent.trim().toLowerCase();
+                if (text === target) {
+                    // Temporarily make visible if hidden, click, then re-hide
+                    var wasHidden = el.closest('[style*="display: none"]');
+                    if (wasHidden) wasHidden.style.display = '';
+                    el.click();
+                    if (wasHidden) wasHidden.style.display = 'none';
                     return true;
                 }
             }
@@ -163,4 +170,5 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
         """
         webView.evaluateJavaScript(js)
     }
+
 }
