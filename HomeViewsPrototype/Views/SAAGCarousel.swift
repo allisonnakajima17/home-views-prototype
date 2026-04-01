@@ -4,14 +4,12 @@ enum CardStyle: CaseIterable {
     case dividers
     case subtleFill
     case subtleStroke
-    case teamGradient
 
     var label: String {
         switch self {
         case .dividers: return "Dividers"
         case .subtleFill: return "Fill"
         case .subtleStroke: return "Stroke"
-        case .teamGradient: return "Gradient"
         }
     }
 }
@@ -41,9 +39,7 @@ struct SAAGCarousel: View {
                         .modifier(CardStyleModifier(
                             style: cardStyle,
                             fill: cardFill,
-                            stroke: cardStroke,
-                            awayColor: game.awayTeam.isMyTeam ? game.awayTeam.accentColor.opacity(0.2) : cardStroke,
-                            homeColor: game.homeTeam.isMyTeam ? game.homeTeam.accentColor.opacity(0.2) : cardStroke
+                            stroke: cardStroke
                         ))
 
                     if cardStyle == .dividers && index < games.count - 1 {
@@ -66,7 +62,7 @@ struct SAAGCarousel: View {
         GameCardData(
             state: .final_,
             homeTeam: TeamInfo(abbreviation: "IOWA", record: "10-10", logoName: "Iowa Hawkeyes (IOWA)", accentColor: Color(hex: 0x1A1A1A)),
-            awayTeam: TeamInfo(abbreviation: "ILL", record: "9-4", logoName: "Illinois Fighting Illini (ILL)", accentColor: Color(hex: 0xE04E39), isMyTeam: true),
+            awayTeam: TeamInfo(abbreviation: "ILL", record: "9-4", logoName: "Illinois Fighting Illini (ILL)", accentColor: Color(hex: 0xE04E39)),
             homeScore: 59,
             awayScore: 71,
             winnerIsHome: false
@@ -74,7 +70,7 @@ struct SAAGCarousel: View {
         // Card 2: UConn vs ILL — Upcoming
         GameCardData(
             state: .upcoming,
-            homeTeam: TeamInfo(abbreviation: "ILL", record: "7-3", logoName: "Illinois Fighting Illini (ILL)", accentColor: Color(hex: 0xE04E39), isMyTeam: true),
+            homeTeam: TeamInfo(abbreviation: "ILL", record: "7-3", logoName: "Illinois Fighting Illini (ILL)", accentColor: Color(hex: 0xE04E39)),
             awayTeam: TeamInfo(abbreviation: "UCONN", record: "7-3", logoName: "UConn Huskies (UCONN)", accentColor: Color(hex: 0x0E1A3E)),
             gameTime: "6:09pm",
             network: "CBS",
@@ -84,7 +80,7 @@ struct SAAGCarousel: View {
         // Card 3: Austin vs LAFC — Upcoming
         GameCardData(
             state: .upcoming,
-            homeTeam: TeamInfo(abbreviation: "LAFC", record: "5-5", logoName: "Los Angeles FC", accentColor: Color(hex: 0xC39E6D), isMyTeam: true),
+            homeTeam: TeamInfo(abbreviation: "LAFC", record: "5-5", logoName: "Los Angeles FC", accentColor: Color(hex: 0xC39E6D)),
             awayTeam: TeamInfo(abbreviation: "AUSTIN", record: "5-4", logoName: "Austin FC", accentColor: Color(hex: 0x00B140)),
             gameTime: "7:30pm",
             network: "APPLE",
@@ -100,8 +96,6 @@ struct CardStyleModifier: ViewModifier {
     let style: CardStyle
     let fill: Color
     let stroke: Color
-    var awayColor: Color = .clear
-    var homeColor: Color = .clear
 
     func body(content: Content) -> some View {
         switch style {
@@ -119,23 +113,6 @@ struct CardStyleModifier: ViewModifier {
                     RoundedRectangle(cornerRadius: 12)
                         .inset(by: 0.5)
                         .stroke(stroke, lineWidth: 1)
-                )
-        case .teamGradient:
-            content
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .inset(by: 0.5)
-                        .stroke(
-                            LinearGradient(
-                                colors: [
-                                    awayColor,
-                                    homeColor
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            ),
-                            lineWidth: 1
-                        )
                 )
         }
     }

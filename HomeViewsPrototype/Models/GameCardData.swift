@@ -11,7 +11,6 @@ struct TeamInfo {
     let record: String
     let logoName: String
     let accentColor: Color
-    var isMyTeam: Bool = false
 }
 
 struct GameCardData: Identifiable {
