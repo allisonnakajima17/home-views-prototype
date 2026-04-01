@@ -184,35 +184,50 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
         let apply = tab == .trending
         let js = """
         (function() {
+            // Clean up previous inline styles and data attributes
+            document.querySelectorAll('[data-native-card]').forEach(function(el) {
+                el.removeAttribute('data-native-card');
+            });
+            document.querySelectorAll('[data-native-bg]').forEach(function(el) {
+                el.style.removeProperty('background-color');
+                el.style.removeProperty('background-image');
+                el.removeAttribute('data-native-bg');
+            });
+
             var css = document.getElementById('__nativeBgOverride');
             if (!css) {
                 css = document.createElement('style');
                 css.id = '__nativeBgOverride';
                 document.head.appendChild(css);
             }
-            css.textContent = \(apply) ? '' : '';
+
             if (\(apply)) {
-                // Find all card elements (have border-radius) and mark them + descendants
-                var cardEls = new Set();
+                // Mark card elements and their descendants
                 document.querySelectorAll('*').forEach(function(el) {
                     var br = parseFloat(window.getComputedStyle(el).borderRadius);
                     if (br > 0) {
-                        cardEls.add(el);
+                        el.setAttribute('data-native-card', '');
                         el.querySelectorAll('*').forEach(function(child) {
-                            cardEls.add(child);
+                            child.setAttribute('data-native-card', '');
                         });
                     }
                 });
-                var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                var bg = isDark ? '#212121' : '#ffffff';
-                document.querySelectorAll('*').forEach(function(el) {
-                    var tag = el.tagName.toLowerCase();
-                    if (cardEls.has(el) || tag === 'img' || tag === 'video' || tag === 'picture' || tag === 'svg' || tag === 'canvas') {
-                        return;
+
+                // CSS with media queries — auto-adapts to light/dark
+                css.textContent = `
+                    *:not([data-native-card]):not(img):not(video):not(picture):not(svg):not(canvas) {
+                        background-color: #ffffff !important;
+                        background-image: none !important;
                     }
-                    el.style.setProperty('background-color', bg, 'important');
-                    el.style.setProperty('background-image', 'none', 'important');
-                });
+                    @media (prefers-color-scheme: dark) {
+                        *:not([data-native-card]):not(img):not(video):not(picture):not(svg):not(canvas) {
+                            background-color: #212121 !important;
+                            background-image: none !important;
+                        }
+                    }
+                `;
+            } else {
+                css.textContent = '';
             }
         })();
         """
