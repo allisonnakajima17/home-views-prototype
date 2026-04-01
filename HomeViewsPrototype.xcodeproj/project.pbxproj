@@ -27,6 +27,7 @@
 		A10018 /* GameCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018 /* GameCardData.swift */; };
 		A10019 /* GameTrackerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019 /* GameTrackerCardView.swift */; };
 		A10020 /* TeamLogoPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020 /* TeamLogoPlaceholder.swift */; };
+		A10021 /* FlamaCond-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10021 /* FlamaCond-Bold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		B10018 /* GameCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCardData.swift; sourceTree = "<group>"; };
 		B10019 /* GameTrackerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTrackerCardView.swift; sourceTree = "<group>"; };
 		B10020 /* TeamLogoPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamLogoPlaceholder.swift; sourceTree = "<group>"; };
+		B10021 /* FlamaCond-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FlamaCond-Bold.otf"; sourceTree = "<group>"; };
 		B10099 /* HomeViewsPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeViewsPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B10100 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,6 +147,7 @@
 				B10013 /* TTNormsPro-Medium.otf */,
 				B10014 /* TTNormsPro-DemiBold.otf */,
 				B10015 /* TTNormsPro-Bold.otf */,
+				B10021 /* FlamaCond-Bold.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				A10013 /* TTNormsPro-Medium.otf in Resources */,
 				A10014 /* TTNormsPro-DemiBold.otf in Resources */,
 				A10015 /* TTNormsPro-Bold.otf in Resources */,
+				A10021 /* FlamaCond-Bold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
