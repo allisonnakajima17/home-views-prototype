@@ -42,8 +42,8 @@ struct SAAGCarousel: View {
                             style: cardStyle,
                             fill: cardFill,
                             stroke: cardStroke,
-                            awayColor: game.awayTeam.isMyTeam ? game.awayTeam.accentColor : cardStroke,
-                            homeColor: game.homeTeam.isMyTeam ? game.homeTeam.accentColor : cardStroke
+                            awayColor: game.awayTeam.isMyTeam ? game.awayTeam.accentColor.opacity(0.2) : cardStroke,
+                            homeColor: game.homeTeam.isMyTeam ? game.homeTeam.accentColor.opacity(0.2) : cardStroke
                         ))
 
                     if cardStyle == .dividers && index < games.count - 1 {
@@ -128,8 +128,8 @@ struct CardStyleModifier: ViewModifier {
                         .stroke(
                             LinearGradient(
                                 colors: [
-                                    awayColor.opacity(0.2),
-                                    homeColor.opacity(0.2)
+                                    awayColor,
+                                    homeColor
                                 ],
                                 startPoint: .top,
                                 endPoint: .bottom
