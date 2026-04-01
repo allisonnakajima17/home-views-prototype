@@ -128,8 +128,8 @@ struct CardStyleModifier: ViewModifier {
                         .stroke(
                             LinearGradient(
                                 colors: [
-                                    awayColor.opacity(0.8),
-                                    homeColor.opacity(0.8)
+                                    awayColor.opacity(0.2),
+                                    homeColor.opacity(0.2)
                                 ],
                                 startPoint: .top,
                                 endPoint: .bottom
