@@ -76,13 +76,12 @@ struct GameTrackerCardView: View {
 
     @ViewBuilder
     private func teamRow(team: TeamInfo, scoreOrOdds: String, isWinner: Bool, scoreColor: Color) -> some View {
-        HStack(alignment: .firstTextBaseline) {
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
+        HStack(alignment: .center) {
+            HStack(alignment: .center, spacing: 4) {
                 Image(team.logoName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                    .alignmentGuide(.firstTextBaseline) { d in d.height * 0.4 }
 
                 Text(team.abbreviation)
                     .font(.custom("TTNormsPro-Bold", size: 16))
