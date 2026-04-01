@@ -192,16 +192,25 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
             }
             css.textContent = \(apply) ? '' : '';
             if (\(apply)) {
-                // Override backgrounds via JS so we can skip rounded cards
+                // Find all card elements (have border-radius) and mark them + descendants
+                var cardEls = new Set();
                 document.querySelectorAll('*').forEach(function(el) {
-                    var cs = window.getComputedStyle(el);
-                    var br = parseFloat(cs.borderRadius);
+                    var br = parseFloat(window.getComputedStyle(el).borderRadius);
+                    if (br > 0) {
+                        cardEls.add(el);
+                        el.querySelectorAll('*').forEach(function(child) {
+                            cardEls.add(child);
+                        });
+                    }
+                });
+                var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var bg = isDark ? '#212121' : '#ffffff';
+                document.querySelectorAll('*').forEach(function(el) {
                     var tag = el.tagName.toLowerCase();
-                    if (br > 0 || tag === 'img' || tag === 'video' || tag === 'picture' || tag === 'svg' || tag === 'canvas') {
+                    if (cardEls.has(el) || tag === 'img' || tag === 'video' || tag === 'picture' || tag === 'svg' || tag === 'canvas') {
                         return;
                     }
-                    var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    el.style.setProperty('background-color', isDark ? '#212121' : '#ffffff', 'important');
+                    el.style.setProperty('background-color', bg, 'important');
                     el.style.setProperty('background-image', 'none', 'important');
                 });
             }
