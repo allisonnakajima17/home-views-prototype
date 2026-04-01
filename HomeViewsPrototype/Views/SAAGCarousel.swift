@@ -99,13 +99,13 @@ struct CardStyleModifier: ViewModifier {
         case .subtleFill:
             content
                 .background(
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 12)
                         .fill(fill)
                 )
         case .subtleStroke:
             content
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 12)
                         .inset(by: 0.5)
                         .stroke(stroke, lineWidth: 1)
                 )
