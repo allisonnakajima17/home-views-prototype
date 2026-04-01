@@ -73,14 +73,15 @@ struct SAAGCarousel: View {
             homeOdds: "14",
             awayOdds: "-300"
         ),
-        // Card 3: Austin vs LAFC — Live
+        // Card 3: Austin vs LAFC — Upcoming
         GameCardData(
-            state: .live,
+            state: .upcoming,
             homeTeam: TeamInfo(abbreviation: "LAFC", record: "5-5", logoName: "Los Angeles FC", accentColor: Color(hex: 0xC39E6D)),
             awayTeam: TeamInfo(abbreviation: "AUSTIN", record: "5-4", logoName: "Austin FC", accentColor: Color(hex: 0x00B140)),
-            periodClock: "1st 10:52",
-            homeLiveScore: 7,
-            awayLiveScore: 3
+            gameTime: "7:30pm",
+            network: "APPLE",
+            homeOdds: "-120",
+            awayOdds: "+140"
         ),
     ]
 }
