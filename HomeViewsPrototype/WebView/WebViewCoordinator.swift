@@ -191,10 +191,9 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
                 document.head.appendChild(css);
             }
             css.textContent = \(transparent) ? `
-                html, body, #__next, .feed-container,
-                [class*="feed"], [class*="Feed"],
-                [class*="container"], [class*="Container"],
-                main, section, article, div[class] {
+                html, body, #__next,
+                body > div, body > div > div, body > div > div > div,
+                #__next > div, #__next > div > div {
                     background-color: transparent !important;
                     background: transparent !important;
                 }
