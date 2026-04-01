@@ -2,13 +2,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = AppViewModel()
-    @State private var cardStyleIndex = 0
     @Environment(\.theme) private var theme
     @Environment(\.colorScheme) private var colorScheme
-
-    private var currentCardStyle: CardStyle {
-        CardStyle.allCases[cardStyleIndex % CardStyle.allCases.count]
-    }
 
     // Header height: nav (44) + pills (48) + spacing (8) = 100
     private let headerHeight: CGFloat = 100
@@ -25,7 +20,7 @@ struct ContentView: View {
             if viewModel.selectedTab == .following {
                 VStack(spacing: 0) {
                     TeamTilesRow(viewModel: viewModel)
-                    SAAGCarousel(cardStyle: currentCardStyle)
+                    SAAGCarousel(cardStyle: .subtleStroke)
                     // Placeholder feed image (temporarily disabled)
                     // Image("FollowingFeedPlaceholder")
                     //     .resizable()
@@ -55,30 +50,6 @@ struct ContentView: View {
 
             HeaderView(viewModel: viewModel)
 
-            // Floating card style toggle button
-            if viewModel.selectedTab == .following {
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                cardStyleIndex += 1
-                            }
-                        } label: {
-                            Text(currentCardStyle.label)
-                                .font(.custom("TTNormsPro-DemiBold", size: 12))
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 8)
-                                .background(Color(red: 0, green: 122/255, blue: 1))
-                                .clipShape(Capsule())
-                        }
-                        .padding(.trailing, 16)
-                        .padding(.bottom, 24)
-                    }
-                }
-            }
         }
         .overlay {
             // Full-screen team screen — slides from right
