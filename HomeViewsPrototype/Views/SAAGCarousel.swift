@@ -1,20 +1,46 @@
 import SwiftUI
 
+enum CardStyle: CaseIterable {
+    case dividers
+    case subtleFill
+    case subtleStroke
+    case fillShadow
+
+    var label: String {
+        switch self {
+        case .dividers: return "Dividers"
+        case .subtleFill: return "Fill"
+        case .subtleStroke: return "Stroke"
+        case .fillShadow: return "Shadow"
+        }
+    }
+}
+
 struct SAAGCarousel: View {
     @Environment(\.colorScheme) private var colorScheme
+    var cardStyle: CardStyle = .dividers
     private let games = SAAGCarousel.sampleGames
 
     private var borderColor: Color {
         colorScheme == .dark ? Color(hex: 0x2A2A2A) : Color(hex: 0xDCDCDC)
     }
 
+    private var cardFill: Color {
+        colorScheme == .dark ? Color(hex: 0x2A2A2A) : Color(hex: 0xF5F5F5)
+    }
+
+    private var cardStroke: Color {
+        colorScheme == .dark ? Color(hex: 0x3A3A3A) : Color(hex: 0xE0E0E0)
+    }
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 4) {
+            HStack(spacing: cardStyle == .dividers ? 4 : 8) {
                 ForEach(Array(games.enumerated()), id: \.element.id) { index, game in
                     GameTrackerCardView(game: game)
+                        .modifier(CardStyleModifier(style: cardStyle, fill: cardFill, stroke: cardStroke))
 
-                    if index < games.count - 1 {
+                    if cardStyle == .dividers && index < games.count - 1 {
                         Rectangle()
                             .fill(borderColor)
                             .frame(width: 0.5, height: 64)
@@ -59,4 +85,38 @@ struct SAAGCarousel: View {
             awayLiveScore: 3
         ),
     ]
+}
+
+// MARK: - Card Style Modifier
+
+struct CardStyleModifier: ViewModifier {
+    let style: CardStyle
+    let fill: Color
+    let stroke: Color
+
+    func body(content: Content) -> some View {
+        switch style {
+        case .dividers:
+            content
+        case .subtleFill:
+            content
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(fill)
+                )
+        case .subtleStroke:
+            content
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(stroke, lineWidth: 1)
+                )
+        case .fillShadow:
+            content
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(fill)
+                        .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
+                )
+        }
+    }
 }
