@@ -82,6 +82,7 @@ struct GameTrackerCardView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
+                    .alignmentGuide(.firstTextBaseline) { d in d[VerticalAlignment.center] }
 
                 Text(team.abbreviation)
                     .font(.custom("TTNormsPro-Bold", size: 16))
