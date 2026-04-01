@@ -53,7 +53,7 @@ struct AddTileView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12)
-                .fill(isDark ? Color(hex: 0x2A2A2A) : Color(hex: 0xF0F0F0))
+                .fill(isDark ? Color(hex: 0x333333) : Color(hex: 0xF2F2F2))
             Image(systemName: "plus")
                 .font(.system(size: 22, weight: .medium))
                 .foregroundColor(isDark ? Color(hex: 0x999999) : Color(hex: 0x5F5F5F))
