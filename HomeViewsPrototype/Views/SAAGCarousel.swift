@@ -123,21 +123,17 @@ struct CardStyleModifier: ViewModifier {
         case .teamGradient:
             content
                 .background(
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.black)
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(
-                                LinearGradient(
-                                    colors: [
-                                        awayColor.opacity(0.35),
-                                        homeColor.opacity(0.35)
-                                    ],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    awayColor.opacity(0.12),
+                                    homeColor.opacity(0.12)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
                             )
-                    }
+                        )
                 )
         }
     }
