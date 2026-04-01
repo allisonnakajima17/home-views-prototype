@@ -42,8 +42,8 @@ struct SAAGCarousel: View {
                             style: cardStyle,
                             fill: cardFill,
                             stroke: cardStroke,
-                            awayColor: game.awayTeam.accentColor,
-                            homeColor: game.homeTeam.accentColor
+                            awayColor: game.awayTeam.isMyTeam ? game.awayTeam.accentColor : cardStroke,
+                            homeColor: game.homeTeam.isMyTeam ? game.homeTeam.accentColor : cardStroke
                         ))
 
                     if cardStyle == .dividers && index < games.count - 1 {
@@ -66,7 +66,7 @@ struct SAAGCarousel: View {
         GameCardData(
             state: .final_,
             homeTeam: TeamInfo(abbreviation: "IOWA", record: "10-10", logoName: "Iowa Hawkeyes (IOWA)", accentColor: Color(hex: 0x1A1A1A)),
-            awayTeam: TeamInfo(abbreviation: "ILL", record: "9-4", logoName: "Illinois Fighting Illini (ILL)", accentColor: Color(hex: 0xE04E39)),
+            awayTeam: TeamInfo(abbreviation: "ILL", record: "9-4", logoName: "Illinois Fighting Illini (ILL)", accentColor: Color(hex: 0xE04E39), isMyTeam: true),
             homeScore: 59,
             awayScore: 71,
             winnerIsHome: false
@@ -74,7 +74,7 @@ struct SAAGCarousel: View {
         // Card 2: UConn vs ILL — Upcoming
         GameCardData(
             state: .upcoming,
-            homeTeam: TeamInfo(abbreviation: "ILL", record: "7-3", logoName: "Illinois Fighting Illini (ILL)", accentColor: Color(hex: 0xE04E39)),
+            homeTeam: TeamInfo(abbreviation: "ILL", record: "7-3", logoName: "Illinois Fighting Illini (ILL)", accentColor: Color(hex: 0xE04E39), isMyTeam: true),
             awayTeam: TeamInfo(abbreviation: "UCONN", record: "7-3", logoName: "UConn Huskies (UCONN)", accentColor: Color(hex: 0x0E1A3E)),
             gameTime: "6:09pm",
             network: "CBS",
@@ -84,7 +84,7 @@ struct SAAGCarousel: View {
         // Card 3: Austin vs LAFC — Upcoming
         GameCardData(
             state: .upcoming,
-            homeTeam: TeamInfo(abbreviation: "LAFC", record: "5-5", logoName: "Los Angeles FC", accentColor: Color(hex: 0xC39E6D)),
+            homeTeam: TeamInfo(abbreviation: "LAFC", record: "5-5", logoName: "Los Angeles FC", accentColor: Color(hex: 0xC39E6D), isMyTeam: true),
             awayTeam: TeamInfo(abbreviation: "AUSTIN", record: "5-4", logoName: "Austin FC", accentColor: Color(hex: 0x00B140)),
             gameTime: "7:30pm",
             network: "APPLE",
@@ -128,8 +128,8 @@ struct CardStyleModifier: ViewModifier {
                         .stroke(
                             LinearGradient(
                                 colors: [
-                                    awayColor.opacity(0.6),
-                                    homeColor.opacity(0.6)
+                                    awayColor.opacity(0.8),
+                                    homeColor.opacity(0.8)
                                 ],
                                 startPoint: .top,
                                 endPoint: .bottom
