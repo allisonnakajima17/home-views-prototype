@@ -17,49 +17,39 @@ struct ContentView: View {
             WebViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
 
-            // Following tab overlay — tiles + SAAG carousel + placeholder feed
+            // Following tab overlay — tiles + SAAG carousel
             if viewModel.selectedTab == .following {
-                GeometryReader { geo in
-                    let w = geo.size.width
-
-                    (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
-                        .ignoresSafeArea()
+                VStack(spacing: 0) {
+                    TeamTilesRow(viewModel: viewModel)
+                    SAAGCarousel(showAlt: showAltCarousel)
                         .allowsHitTesting(false)
-
-                    VStack(spacing: 0) {
-                        TeamTilesRow(viewModel: viewModel)
-                        SAAGCarousel(showAlt: showAltCarousel)
-                            .allowsHitTesting(false)
-                            .id(showAltCarousel)
-                        Image("FollowingFeedPlaceholder")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: w)
-                            .clipped()
-                            .allowsHitTesting(false)
-                    }
-                    .frame(width: w, alignment: .top)
-                    .offset(y: headerHeight - viewModel.nativeScrollOffset)
+                        .id(showAltCarousel)
+                    // Placeholder feed image (temporarily disabled)
+                    // Image("FollowingFeedPlaceholder")
+                    //     .resizable()
+                    //     .scaledToFill()
+                    //     .frame(maxWidth: .infinity)
+                    //     .clipped()
+                    //     .allowsHitTesting(false)
                 }
+                .offset(y: headerHeight - viewModel.nativeScrollOffset)
             }
 
-            // Trending tab overlay — placeholder feed
-            if viewModel.selectedTab == .trending {
-                GeometryReader { geo in
-                    let w = geo.size.width
-
-                    (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
-                        .ignoresSafeArea()
-
-                    Image("TrendingFeedPlaceholder")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: w)
-                        .clipped()
-                        .offset(y: headerHeight - viewModel.nativeScrollOffset)
-                }
-                .allowsHitTesting(false)
-            }
+            // Trending tab placeholder feed (temporarily disabled)
+            // if viewModel.selectedTab == .trending {
+            //     GeometryReader { geo in
+            //         let w = geo.size.width
+            //         (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
+            //             .ignoresSafeArea()
+            //         Image("TrendingFeedPlaceholder")
+            //             .resizable()
+            //             .scaledToFill()
+            //             .frame(width: w)
+            //             .clipped()
+            //             .offset(y: headerHeight - viewModel.nativeScrollOffset)
+            //     }
+            //     .allowsHitTesting(false)
+            // }
 
             HeaderView(viewModel: viewModel)
 
