@@ -190,22 +190,21 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
                 css.id = '__nativeBgOverride';
                 document.head.appendChild(css);
             }
-            css.textContent = \(apply) ? `
-                * {
-                    background-color: #ffffff !important;
-                    background: #ffffff !important;
-                }
-                @media (prefers-color-scheme: dark) {
-                    * {
-                        background-color: #212121 !important;
-                        background: #212121 !important;
+            css.textContent = \(apply) ? '' : '';
+            if (\(apply)) {
+                // Override backgrounds via JS so we can skip rounded cards
+                document.querySelectorAll('*').forEach(function(el) {
+                    var cs = window.getComputedStyle(el);
+                    var br = parseFloat(cs.borderRadius);
+                    var tag = el.tagName.toLowerCase();
+                    if (br > 0 || tag === 'img' || tag === 'video' || tag === 'picture' || tag === 'svg' || tag === 'canvas') {
+                        return;
                     }
-                }
-                img, video, picture, svg, canvas {
-                    background-color: transparent !important;
-                    background: transparent !important;
-                }
-            ` : '';
+                    var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    el.style.setProperty('background-color', isDark ? '#212121' : '#ffffff', 'important');
+                    el.style.setProperty('background-image', 'none', 'important');
+                });
+            }
         })();
         """
         webView.evaluateJavaScript(js)
