@@ -134,6 +134,7 @@ struct CardStyleModifier: ViewModifier {
                                 endPoint: .bottom
                             )
                         )
+                        .blur(radius: 8)
                 )
         }
     }
