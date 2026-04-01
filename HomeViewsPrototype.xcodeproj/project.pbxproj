@@ -24,6 +24,9 @@
 		A10015 /* TTNormsPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B10015 /* TTNormsPro-Bold.otf */; };
 		A10016 /* TeamTilesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016 /* TeamTilesRow.swift */; };
 		A10017 /* SAAGCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10017 /* SAAGCarousel.swift */; };
+		A10018 /* GameCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018 /* GameCardData.swift */; };
+		A10019 /* GameTrackerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019 /* GameTrackerCardView.swift */; };
+		A10020 /* TeamLogoPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10020 /* TeamLogoPlaceholder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +47,9 @@
 		B10015 /* TTNormsPro-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TTNormsPro-Bold.otf"; sourceTree = "<group>"; };
 		B10016 /* TeamTilesRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamTilesRow.swift; sourceTree = "<group>"; };
 		B10017 /* SAAGCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAAGCarousel.swift; sourceTree = "<group>"; };
+		B10018 /* GameCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCardData.swift; sourceTree = "<group>"; };
+		B10019 /* GameTrackerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTrackerCardView.swift; sourceTree = "<group>"; };
+		B10020 /* TeamLogoPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamLogoPlaceholder.swift; sourceTree = "<group>"; };
 		B10099 /* HomeViewsPrototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeViewsPrototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B10100 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,6 +92,7 @@
 			children = (
 				B10006 /* Tab.swift */,
 				B10007 /* Theme.swift */,
+				B10018 /* GameCardData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -99,6 +106,8 @@
 				B10005 /* PillsRowView.swift */,
 			B10016 /* TeamTilesRow.swift */,
 			B10017 /* SAAGCarousel.swift */,
+			B10019 /* GameTrackerCardView.swift */,
+			B10020 /* TeamLogoPlaceholder.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -233,6 +242,9 @@
 				A10010 /* WebViewCoordinator.swift in Sources */,
 				A10016 /* TeamTilesRow.swift in Sources */,
 				A10017 /* SAAGCarousel.swift in Sources */,
+				A10018 /* GameCardData.swift in Sources */,
+				A10019 /* GameTrackerCardView.swift in Sources */,
+				A10020 /* TeamLogoPlaceholder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
