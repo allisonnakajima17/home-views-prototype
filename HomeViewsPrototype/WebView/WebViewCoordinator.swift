@@ -17,6 +17,7 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
 
     func switchToTab(_ tab: Tab) {
         updateTopPadding(for: tab)
+        updateBackground(for: tab)
         let js = """
         (function() {
             var labels = ['for you', 'following', 'trending'];
@@ -173,6 +174,31 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
                 }
             `;
             document.head.appendChild(css);
+        })();
+        """
+        webView.evaluateJavaScript(js)
+    }
+
+    func updateBackground(for tab: Tab) {
+        guard let webView else { return }
+        let transparent = tab == .trending
+        let js = """
+        (function() {
+            var css = document.getElementById('__nativeBgOverride');
+            if (!css) {
+                css = document.createElement('style');
+                css.id = '__nativeBgOverride';
+                document.head.appendChild(css);
+            }
+            css.textContent = \(transparent) ? `
+                html, body, #__next, .feed-container,
+                [class*="feed"], [class*="Feed"],
+                [class*="container"], [class*="Container"],
+                main, section, article, div[class] {
+                    background-color: transparent !important;
+                    background: transparent !important;
+                }
+            ` : '';
         })();
         """
         webView.evaluateJavaScript(js)
