@@ -33,6 +33,19 @@ struct GameTrackerCardView: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .frame(width: contentWidth + 24, height: 84)
+        .overlay(alignment: .leading) {
+            if game.state == .final_ {
+                VStack(spacing: 4) {
+                    RoundedRectangle(cornerRadius: 1)
+                        .fill(game.winnerIsHome == false ? winnerIndicatorColor : .clear)
+                        .frame(width: 4, height: 14)
+                    RoundedRectangle(cornerRadius: 1)
+                        .fill(game.winnerIsHome == true ? winnerIndicatorColor : .clear)
+                        .frame(width: 4, height: 14)
+                }
+                .offset(y: 12)
+            }
+        }
     }
 
     // MARK: - Header
@@ -78,13 +91,7 @@ struct GameTrackerCardView: View {
 
     @ViewBuilder
     private func teamRow(team: TeamInfo, scoreOrOdds: String, isWinner: Bool, scoreColor: Color) -> some View {
-        HStack(alignment: .center, spacing: 0) {
-            if game.state == .final_ {
-                RoundedRectangle(cornerRadius: 1)
-                    .fill(isWinner ? winnerIndicatorColor : .clear)
-                    .frame(width: 4, height: 14)
-                    .padding(.trailing, 4)
-            }
+        HStack(alignment: .center) {
             HStack(alignment: .center, spacing: 4) {
                 Image(team.logoName)
                     .resizable()
