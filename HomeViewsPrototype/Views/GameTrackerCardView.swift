@@ -2,12 +2,9 @@ import SwiftUI
 
 struct GameTrackerCardView: View {
     let game: GameCardData
+    @Environment(\.theme) private var theme
 
     private let contentWidth: CGFloat = 136
-
-    // Colors from Figma design tokens
-    private let textPrimary = Color(hex: 0x181818)
-    private let textSecondary = Color(hex: 0x5F5F5F)
     private let textLive = Color(hex: 0x004ACE)
 
     var body: some View {
@@ -42,13 +39,13 @@ struct GameTrackerCardView: View {
                 Text("FINAL")
                     .font(.custom("TTNormsPro-Bold", size: 10))
                     .tracking(0.25)
-                    .foregroundColor(textPrimary)
+                    .foregroundColor(theme.textPrimary)
                     .lineLimit(1)
             case .upcoming:
                 Text(game.gameTime ?? "")
                     .font(.custom("TTNormsPro-Bold", size: 10))
                     .tracking(0.25)
-                    .foregroundColor(textSecondary)
+                    .foregroundColor(theme.textSecondary)
                     .lineLimit(1)
             case .live:
                 Text(game.periodClock ?? "")
@@ -64,7 +61,7 @@ struct GameTrackerCardView: View {
                 Text(network)
                     .font(.custom("TTNormsPro-Bold", size: 10))
                     .tracking(0.25)
-                    .foregroundColor(textSecondary)
+                    .foregroundColor(theme.textSecondary)
                     .lineLimit(1)
             }
         }
@@ -84,14 +81,14 @@ struct GameTrackerCardView: View {
 
                 Text(team.abbreviation)
                     .font(.custom("TTNormsPro-Bold", size: 16))
-                    .foregroundColor(isWinner || game.state != .final_ ? textPrimary : textSecondary)
+                    .foregroundColor(isWinner || game.state != .final_ ? theme.textPrimary : theme.textSecondary)
                     .textCase(.uppercase)
                     .lineLimit(1)
 
                 Text(team.record)
                     .font(.custom("TTNormsPro-Regular", size: 10))
                     .tracking(0.25)
-                    .foregroundColor(textSecondary)
+                    .foregroundColor(theme.textSecondary)
                     .lineLimit(1)
             }
 
@@ -131,22 +128,22 @@ struct GameTrackerCardView: View {
     private var awayScoreColor: Color {
         switch game.state {
         case .final_:
-            return game.winnerIsHome == false ? textPrimary : textSecondary
+            return game.winnerIsHome == false ? theme.textPrimary : theme.textSecondary
         case .upcoming:
-            return textSecondary
+            return theme.textSecondary
         case .live:
-            return textPrimary
+            return theme.textPrimary
         }
     }
 
     private var homeScoreColor: Color {
         switch game.state {
         case .final_:
-            return game.winnerIsHome == true ? textPrimary : textSecondary
+            return game.winnerIsHome == true ? theme.textPrimary : theme.textSecondary
         case .upcoming:
-            return textSecondary
+            return theme.textSecondary
         case .live:
-            return textPrimary
+            return theme.textPrimary
         }
     }
 

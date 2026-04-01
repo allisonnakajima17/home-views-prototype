@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SAAGCarousel: View {
-    private let separatorColor = Color(hex: 0xDCDCDC)
+    @Environment(\.theme) private var theme
     private let games = SAAGCarousel.sampleGames
 
     var body: some View {
@@ -12,7 +12,7 @@ struct SAAGCarousel: View {
 
                     if index < games.count - 1 {
                         Rectangle()
-                            .fill(separatorColor)
+                            .fill(theme.border)
                             .frame(width: 0.5, height: 64)
                     }
                 }
