@@ -1,8 +1,12 @@
 import SwiftUI
 
 struct SAAGCarousel: View {
-    @Environment(\.theme) private var theme
+    @Environment(\.colorScheme) private var colorScheme
     private let games = SAAGCarousel.sampleGames
+
+    private var borderColor: Color {
+        colorScheme == .dark ? Color(hex: 0x2A2A2A) : Color(hex: 0xDCDCDC)
+    }
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -12,7 +16,7 @@ struct SAAGCarousel: View {
 
                     if index < games.count - 1 {
                         Rectangle()
-                            .fill(theme.border)
+                            .fill(borderColor)
                             .frame(width: 0.5, height: 64)
                     }
                 }
