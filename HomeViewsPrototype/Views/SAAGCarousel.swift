@@ -122,19 +122,20 @@ struct CardStyleModifier: ViewModifier {
                 )
         case .teamGradient:
             content
-                .background(
+                .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(
+                        .inset(by: 0.5)
+                        .stroke(
                             LinearGradient(
                                 colors: [
-                                    awayColor.opacity(0.12),
-                                    homeColor.opacity(0.12)
+                                    awayColor.opacity(0.6),
+                                    homeColor.opacity(0.6)
                                 ],
                                 startPoint: .top,
                                 endPoint: .bottom
-                            )
+                            ),
+                            lineWidth: 1
                         )
-                        .blur(radius: 8)
                 )
         }
     }
