@@ -104,8 +104,9 @@ struct CardStyleModifier: ViewModifier {
                 )
         case .subtleStroke:
             content
-                .background(
+                .overlay(
                     RoundedRectangle(cornerRadius: 8)
+                        .inset(by: 0.5)
                         .stroke(stroke, lineWidth: 1)
                 )
         }
