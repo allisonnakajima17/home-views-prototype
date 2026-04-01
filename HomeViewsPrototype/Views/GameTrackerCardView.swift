@@ -100,6 +100,8 @@ struct GameTrackerCardView: View {
 
             Text(scoreOrOdds)
                 .font(.custom(scoreFont, size: scoreFontSize))
+                .tracking(game.state == .final_ ? 0.5 : 0)
+                .lineSpacing(0)
                 .foregroundColor(scoreColor)
                 .lineLimit(1)
         }
@@ -163,6 +165,13 @@ struct GameTrackerCardView: View {
     }
 
     private var scoreFontSize: CGFloat {
-        game.state == .upcoming ? 12 : 16
+        switch game.state {
+        case .final_:
+            return 18
+        case .upcoming:
+            return 12
+        case .live:
+            return 16
+        }
     }
 }
