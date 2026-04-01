@@ -181,7 +181,7 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
 
     func updateBackground(for tab: Tab) {
         guard let webView else { return }
-        let transparent = tab == .trending
+        let apply = tab == .trending
         let js = """
         (function() {
             var css = document.getElementById('__nativeBgOverride');
@@ -190,12 +190,20 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
                 css.id = '__nativeBgOverride';
                 document.head.appendChild(css);
             }
-            css.textContent = \(transparent) ? `
+            css.textContent = \(apply) ? `
                 html, body, #__next,
                 body > div, body > div > div, body > div > div > div,
                 #__next > div, #__next > div > div {
-                    background-color: transparent !important;
-                    background: transparent !important;
+                    background-color: #ffffff !important;
+                    background: #ffffff !important;
+                }
+                @media (prefers-color-scheme: dark) {
+                    html, body, #__next,
+                    body > div, body > div > div, body > div > div > div,
+                    #__next > div, #__next > div > div {
+                        background-color: #212121 !important;
+                        background: #212121 !important;
+                    }
                 }
             ` : '';
         })();
