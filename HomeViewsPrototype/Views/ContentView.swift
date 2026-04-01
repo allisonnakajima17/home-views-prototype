@@ -21,11 +21,14 @@ struct ContentView: View {
                 VStack(spacing: 0) {
                     TeamTilesRow(viewModel: viewModel)
                     SAAGCarousel(cardStyle: .subtleStroke)
-                    Image("FollowingFeedPlaceholder")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .allowsHitTesting(false)
+                    GeometryReader { geo in
+                        Image("FollowingFeedPlaceholder")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: geo.size.width)
+                            .clipped()
+                    }
+                    .allowsHitTesting(false)
                 }
                 .offset(y: headerHeight - viewModel.nativeScrollOffset)
             }
