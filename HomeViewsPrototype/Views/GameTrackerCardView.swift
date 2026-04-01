@@ -35,15 +35,19 @@ struct GameTrackerCardView: View {
         .frame(width: contentWidth + 24, height: 84)
         .overlay(alignment: .leading) {
             if game.state == .final_ {
-                VStack(spacing: 4) {
-                    RoundedRectangle(cornerRadius: 1)
-                        .fill(game.winnerIsHome == false ? winnerIndicatorColor : .clear)
-                        .frame(width: 4, height: 14)
-                    RoundedRectangle(cornerRadius: 1)
-                        .fill(game.winnerIsHome == true ? winnerIndicatorColor : .clear)
-                        .frame(width: 4, height: 14)
+                VStack(alignment: .leading, spacing: 8) {
+                    // Spacer matching header row height
+                    Color.clear.frame(height: 12)
+                    VStack(spacing: 4) {
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(game.winnerIsHome == false ? winnerIndicatorColor : .clear)
+                            .frame(width: 4, height: 20)
+                        RoundedRectangle(cornerRadius: 1)
+                            .fill(game.winnerIsHome == true ? winnerIndicatorColor : .clear)
+                            .frame(width: 4, height: 20)
+                    }
                 }
-                .offset(y: 12)
+                .padding(.vertical, 8)
             }
         }
     }
