@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var viewModel = AppViewModel()
+    @State private var useGradientStyle = false
     @Environment(\.theme) private var theme
     @Environment(\.colorScheme) private var colorScheme
 
@@ -20,7 +21,7 @@ struct ContentView: View {
             if viewModel.selectedTab == .following {
                 VStack(spacing: 0) {
                     TeamTilesRow(viewModel: viewModel)
-                    SAAGCarousel(cardStyle: .subtleStroke)
+                    SAAGCarousel(cardStyle: useGradientStyle ? .teamGradient : .subtleStroke)
                     // Placeholder feed image (temporarily disabled)
                     // Image("FollowingFeedPlaceholder")
                     //     .resizable()
@@ -50,6 +51,30 @@ struct ContentView: View {
 
             HeaderView(viewModel: viewModel)
 
+            // Floating style toggle
+            if viewModel.selectedTab == .following {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                useGradientStyle.toggle()
+                            }
+                        } label: {
+                            Text(useGradientStyle ? "Gradient" : "Stroke")
+                                .font(.custom("TTNormsPro-DemiBold", size: 12))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color(red: 0, green: 122/255, blue: 1))
+                                .clipShape(Capsule())
+                        }
+                        .padding(.trailing, 16)
+                        .padding(.bottom, 24)
+                    }
+                }
+            }
         }
         .overlay {
             // Full-screen team screen — slides from right

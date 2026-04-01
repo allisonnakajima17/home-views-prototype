@@ -4,12 +4,14 @@ enum CardStyle: CaseIterable {
     case dividers
     case subtleFill
     case subtleStroke
+    case teamGradient
 
     var label: String {
         switch self {
         case .dividers: return "Dividers"
         case .subtleFill: return "Fill"
         case .subtleStroke: return "Stroke"
+        case .teamGradient: return "Gradient"
         }
     }
 }
@@ -36,7 +38,13 @@ struct SAAGCarousel: View {
             HStack(spacing: cardStyle == .dividers ? 4 : 8) {
                 ForEach(Array(games.enumerated()), id: \.element.id) { index, game in
                     GameTrackerCardView(game: game)
-                        .modifier(CardStyleModifier(style: cardStyle, fill: cardFill, stroke: cardStroke))
+                        .modifier(CardStyleModifier(
+                            style: cardStyle,
+                            fill: cardFill,
+                            stroke: cardStroke,
+                            awayColor: game.awayTeam.accentColor,
+                            homeColor: game.homeTeam.accentColor
+                        ))
 
                     if cardStyle == .dividers && index < games.count - 1 {
                         Rectangle()
@@ -92,6 +100,8 @@ struct CardStyleModifier: ViewModifier {
     let style: CardStyle
     let fill: Color
     let stroke: Color
+    var awayColor: Color = .clear
+    var homeColor: Color = .clear
 
     func body(content: Content) -> some View {
         switch style {
@@ -109,6 +119,25 @@ struct CardStyleModifier: ViewModifier {
                     RoundedRectangle(cornerRadius: 12)
                         .inset(by: 0.5)
                         .stroke(stroke, lineWidth: 1)
+                )
+        case .teamGradient:
+            content
+                .background(
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.black)
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        awayColor.opacity(0.35),
+                                        homeColor.opacity(0.35)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                    }
                 )
         }
     }
