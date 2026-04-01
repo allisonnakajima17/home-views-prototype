@@ -77,7 +77,7 @@ struct GameTrackerCardView: View {
     @ViewBuilder
     private func teamRow(team: TeamInfo, scoreOrOdds: String, isWinner: Bool, scoreColor: Color) -> some View {
         HStack(alignment: .firstTextBaseline) {
-            HStack(alignment: .center, spacing: 4) {
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Image(team.logoName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
