@@ -9,6 +9,7 @@ enum GameState {
 struct TeamInfo {
     let abbreviation: String
     let record: String
+    let logoName: String
     let accentColor: Color
 }
 

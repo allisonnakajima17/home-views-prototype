@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "Illinois Fighting Illini (ILL).svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}

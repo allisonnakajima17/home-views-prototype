@@ -78,10 +78,10 @@ struct GameTrackerCardView: View {
     private func teamRow(team: TeamInfo, scoreOrOdds: String, isWinner: Bool, scoreColor: Color) -> some View {
         HStack {
             HStack(spacing: 4) {
-                TeamLogoPlaceholder(
-                    abbreviation: team.abbreviation,
-                    color: team.accentColor
-                )
+                Image(team.logoName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 20, height: 20)
 
                 Text(team.abbreviation)
                     .font(.custom("TTNormsPro-Bold", size: 16))
