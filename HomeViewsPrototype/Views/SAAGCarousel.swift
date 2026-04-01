@@ -21,7 +21,6 @@ struct SAAGCarousel: View {
         }
         .padding(.top, 4)
         .padding(.bottom, 8)
-        .background(theme.surfacePrimary)
     }
 
     // MARK: - Sample Data (matches Figma)
