@@ -23,9 +23,8 @@ struct ContentView: View {
                     SAAGCarousel(cardStyle: .subtleStroke)
                     Image("FollowingFeedPlaceholder")
                         .resizable()
-                        .scaledToFill()
+                        .scaledToFit()
                         .frame(maxWidth: .infinity)
-                        .clipped()
                         .allowsHitTesting(false)
                 }
                 .offset(y: headerHeight - viewModel.nativeScrollOffset)
