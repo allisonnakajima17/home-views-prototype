@@ -10,6 +10,7 @@ struct GameTrackerCardView: View {
     private var isDark: Bool { colorScheme == .dark }
     private var textPrimary: Color { isDark ? .white : Color(hex: 0x181818) }
     private var textSecondary: Color { isDark ? Color(hex: 0x999999) : Color(hex: 0x5F5F5F) }
+    private var winnerIndicatorColor: Color { isDark ? .white : Color(hex: 0x212121) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -77,7 +78,13 @@ struct GameTrackerCardView: View {
 
     @ViewBuilder
     private func teamRow(team: TeamInfo, scoreOrOdds: String, isWinner: Bool, scoreColor: Color) -> some View {
-        HStack(alignment: .center) {
+        HStack(alignment: .center, spacing: 0) {
+            if game.state == .final_ {
+                RoundedRectangle(cornerRadius: 1)
+                    .fill(isWinner ? winnerIndicatorColor : .clear)
+                    .frame(width: 4, height: 14)
+                    .padding(.trailing, 4)
+            }
             HStack(alignment: .center, spacing: 4) {
                 Image(team.logoName)
                     .resizable()
