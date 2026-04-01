@@ -8,6 +8,7 @@ struct TeamTile: Identifiable {
 
 struct TeamTilesRow: View {
     @Bindable var viewModel: AppViewModel
+    @Environment(\.colorScheme) private var colorScheme
 
     private let tiles = [
         TeamTile(id: "illinois", tileImage: "TeamTileIllinois", screenImage: "ScreenIllinois"),
@@ -26,11 +27,15 @@ struct TeamTilesRow: View {
                         }
                     }
                 } label: {
-                    Image(tile.tileImage)
-                        .resizable()
-                        .aspectRatio(1, contentMode: .fit)
-                        .frame(width: 56, height: 56)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    if tile.id == "add" {
+                        AddTileView(isDark: colorScheme == .dark)
+                    } else {
+                        Image(tile.tileImage)
+                            .resizable()
+                            .aspectRatio(1, contentMode: .fit)
+                            .frame(width: 56, height: 56)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
                 }
                 .buttonStyle(.plain)
             }
@@ -39,6 +44,21 @@ struct TeamTilesRow: View {
         .padding(.horizontal, 16)
         .padding(.top, 12)
         .padding(.bottom, 24)
+    }
+}
+
+struct AddTileView: View {
+    let isDark: Bool
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(isDark ? Color(hex: 0x2A2A2A) : Color(hex: 0xF0F0F0))
+            Image(systemName: "plus")
+                .font(.system(size: 22, weight: .medium))
+                .foregroundColor(isDark ? Color(hex: 0x999999) : Color(hex: 0x5F5F5F))
+        }
+        .frame(width: 56, height: 56)
     }
 }
 
