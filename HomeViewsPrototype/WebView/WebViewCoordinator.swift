@@ -191,19 +191,19 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
                 document.head.appendChild(css);
             }
             css.textContent = \(apply) ? `
-                html, body, #__next,
-                body > div, body > div > div, body > div > div > div,
-                #__next > div, #__next > div > div {
+                * {
                     background-color: #ffffff !important;
                     background: #ffffff !important;
                 }
                 @media (prefers-color-scheme: dark) {
-                    html, body, #__next,
-                    body > div, body > div > div, body > div > div > div,
-                    #__next > div, #__next > div > div {
+                    * {
                         background-color: #212121 !important;
                         background: #212121 !important;
                     }
+                }
+                img, video, picture, svg, canvas {
+                    background-color: transparent !important;
+                    background: transparent !important;
                 }
             ` : '';
         })();
