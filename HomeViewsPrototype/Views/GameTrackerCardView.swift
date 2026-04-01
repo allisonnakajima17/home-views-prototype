@@ -152,7 +152,14 @@ struct GameTrackerCardView: View {
     }
 
     private var scoreFont: String {
-        game.state == .upcoming ? "TTNormsPro-Regular" : "TTNormsPro-Bold"
+        switch game.state {
+        case .final_:
+            return "FlamaCond-Bold"
+        case .upcoming:
+            return "TTNormsPro-Regular"
+        case .live:
+            return "TTNormsPro-Bold"
+        }
     }
 
     private var scoreFontSize: CGFloat {
