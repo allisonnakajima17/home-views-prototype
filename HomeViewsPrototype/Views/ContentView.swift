@@ -21,7 +21,6 @@ struct ContentView: View {
                 VStack(spacing: 0) {
                     TeamTilesRow(viewModel: viewModel)
                     SAAGCarousel()
-                        .allowsHitTesting(false)
                     // Placeholder feed image (temporarily disabled)
                     // Image("FollowingFeedPlaceholder")
                     //     .resizable()
