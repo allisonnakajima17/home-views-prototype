@@ -29,8 +29,8 @@ struct GameTrackerCardView: View {
                 )
             }
         }
-        .frame(width: contentWidth, height: 64)
         .padding(8)
+        .frame(width: contentWidth + 16, height: 84)
     }
 
     // MARK: - Header
