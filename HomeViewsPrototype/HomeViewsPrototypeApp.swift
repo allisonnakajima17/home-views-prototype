@@ -9,23 +9,23 @@ struct HomeViewsPrototypeApp: App {
             TabView {
                 ContentView()
                     .tabItem {
-                        Label("Home", systemImage: "house.fill")
+                        Label("Home", image: "TabHome")
                     }
                 Color.clear
                     .tabItem {
-                        Label("Scores", systemImage: "sportscourt.fill")
+                        Label("Scores", image: "TabScores")
                     }
                 Color.clear
                     .tabItem {
-                        Label("Watch", systemImage: "play.tv.fill")
+                        Label("Watch", image: "TabWatch")
                     }
                 Color.clear
                     .tabItem {
-                        Label("Picks", systemImage: "checkmark.circle.fill")
+                        Label("Picks", image: "TabPicks")
                     }
                 Color.clear
                     .tabItem {
-                        Label("More", systemImage: "ellipsis")
+                        Label("More", image: "TabMore")
                     }
             }
             .environment(\.theme, colorScheme == .dark ? .dark : .light)
