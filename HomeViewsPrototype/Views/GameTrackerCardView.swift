@@ -29,7 +29,7 @@ struct GameTrackerCardView: View {
                 )
             }
         }
-        .frame(width: contentWidth)
+        .frame(width: contentWidth, height: 64)
         .padding(8)
     }
 
