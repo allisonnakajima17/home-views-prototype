@@ -4,14 +4,12 @@ enum CardStyle: CaseIterable {
     case dividers
     case subtleFill
     case subtleStroke
-    case fillShadow
 
     var label: String {
         switch self {
         case .dividers: return "Dividers"
         case .subtleFill: return "Fill"
         case .subtleStroke: return "Stroke"
-        case .fillShadow: return "Shadow"
         }
     }
 }
@@ -109,13 +107,6 @@ struct CardStyleModifier: ViewModifier {
                 .background(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(stroke, lineWidth: 1)
-                )
-        case .fillShadow:
-            content
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(fill)
-                        .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
                 )
         }
     }
