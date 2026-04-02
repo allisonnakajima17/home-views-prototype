@@ -7,26 +7,21 @@ struct HomeViewsPrototypeApp: App {
     var body: some Scene {
         WindowGroup {
             TabView {
-                ContentView()
-                    .tabItem {
-                        Label("Home", image: "TabHome")
-                    }
-                Color.clear
-                    .tabItem {
-                        Label("Scores", image: "TabScores")
-                    }
-                Color.clear
-                    .tabItem {
-                        Label("Watch", image: "TabWatch")
-                    }
-                Color.clear
-                    .tabItem {
-                        Label("Picks", image: "TabPicks")
-                    }
-                Color.clear
-                    .tabItem {
-                        Label("More", image: "TabMore")
-                    }
+                Tab("Home", image: "TabHome") {
+                    ContentView()
+                }
+                Tab("Scores", image: "TabScores") {
+                    Color.clear
+                }
+                Tab("Watch", image: "TabWatch") {
+                    Color.clear
+                }
+                Tab("Picks", image: "TabPicks") {
+                    Color.clear
+                }
+                Tab(role: .search) {
+                    Color.clear
+                }
             }
             .environment(\.theme, colorScheme == .dark ? .dark : .light)
             .preferredColorScheme(nil)
