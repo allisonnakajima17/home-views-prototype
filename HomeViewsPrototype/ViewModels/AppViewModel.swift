@@ -28,7 +28,7 @@ final class AppViewModel {
     func selectTab(_ tab: Tab) {
         guard tab != selectedTab else { return }
         selectedTab = tab
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.88)) { pillsVisible = true }
+        withAnimation(.easeInOut(duration: 0.35)) { pillsVisible = true }
         UISelectionFeedbackGenerator().selectionChanged()
         webCoordinator?.switchToTab(tab)
     }
@@ -41,7 +41,7 @@ final class AppViewModel {
 
         if nearTop {
             if !pillsVisible {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.88)) { pillsVisible = true }
+                withAnimation(.easeInOut(duration: 0.35)) { pillsVisible = true }
             }
             directionAnchor = offset
             lastDirection = .none
@@ -62,11 +62,15 @@ final class AppViewModel {
 
         let accumulated = abs(offset - directionAnchor)
 
-        // Small threshold — responsive but avoids jitter
-        if accumulated > 8 {
+        // Threshold matches native tab bar minimize timing —
+        // low enough to fire in sync with system, with a small
+        // buffer to filter scroll noise from the web view
+        let threshold: CGFloat = currentDirection == .up ? 2 : 3
+        if accumulated > threshold {
             let shouldShow = currentDirection == .up
             if shouldShow != pillsVisible {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.88)) { pillsVisible = shouldShow }
+                // Native tab bar uses ~0.35s ease; match it so pills and tabs move together
+                withAnimation(.easeInOut(duration: 0.35)) { pillsVisible = shouldShow }
             }
         }
 
