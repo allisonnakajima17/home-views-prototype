@@ -168,7 +168,10 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
             if (document.getElementById('__nativeDarkMode')) return;
             css.textContent = `
                 @media (prefers-color-scheme: dark) {
-                    html, body, #__next, .feed-container {
+                    html, body {
+                        background-color: transparent !important;
+                    }
+                    #__next, .feed-container {
                         background-color: #212121 !important;
                     }
                 }
