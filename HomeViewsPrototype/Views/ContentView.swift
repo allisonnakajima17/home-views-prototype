@@ -4,12 +4,25 @@ struct ContentView: View {
     @Bindable var viewModel: AppViewModel
     @Environment(\.theme) private var theme
     @Environment(\.colorScheme) private var colorScheme
+    @State private var proxyPosition = ScrollPosition(edge: .top)
 
     // Header height: nav (44) + pills (48) + spacing (8) = 100
     private let headerHeight: CGFloat = 100
 
     var body: some View {
         ZStack(alignment: .top) {
+            // Ghost ScrollView — mirrors WKWebView offset so the system
+            // can detect scroll direction for tab bar minimize/restore.
+            ScrollView {
+                Color.clear.frame(height: 10000)
+            }
+            .scrollPosition($proxyPosition)
+            .allowsHitTesting(false)
+            .opacity(0.01)
+            .onChange(of: viewModel.scrollOffset) { _, newOffset in
+                proxyPosition = ScrollPosition(point: CGPoint(x: 0, y: newOffset))
+            }
+
             (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
                 .ignoresSafeArea()
 
