@@ -83,6 +83,7 @@ struct ContentView: View {
                     Spacer()
 
                     MenuButtonView()
+                        .glassEffect(.regular, in: .capsule)
                 }
                 .padding(.horizontal, 16)
                 .frame(height: 52)
