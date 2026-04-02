@@ -50,6 +50,8 @@ struct HeaderView: View {
             }
             .ignoresSafeArea(edges: .top)
         )
+        .offset(y: viewModel.pillsVisible ? 0 : -20)
+        .scaleEffect(viewModel.pillsVisible ? 1 : 0.96, anchor: .top)
         .opacity(viewModel.pillsVisible ? 1 : 0)
     }
 }
