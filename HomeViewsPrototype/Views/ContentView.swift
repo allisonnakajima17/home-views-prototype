@@ -14,13 +14,38 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
+            // Layer 1: Background color
             (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
                 .ignoresSafeArea()
 
+            // Layer 2: Header gradient (behind the feed)
+            VStack(spacing: 0) {
+                Spacer().frame(height: 100)
+            }
+            .frame(maxWidth: .infinity)
+            .background(
+                ZStack {
+                    tintColor
+                        .ignoresSafeArea(edges: .top)
+
+                    LinearGradient(
+                        stops: [
+                            .init(color: (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary).opacity(0.92), location: 0.0),
+                            .init(color: colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary, location: 1.0)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea(edges: .top)
+                }
+            )
+            .allowsHitTesting(false)
+
+            // Layer 3: Web view feed (scrolls on top of the gradient)
             WebViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
 
-            // Following tab overlay — tiles + SAAG carousel
+            // Layer 3b: Following tab overlay
             if viewModel.selectedTab == .following {
                 VStack(spacing: 0) {
                     TeamTilesRow(viewModel: viewModel)
@@ -37,9 +62,8 @@ struct ContentView: View {
                 .offset(y: headerHeight - viewModel.nativeScrollOffset)
             }
 
-            // Header
+            // Layer 4: Nav elements (float on top of everything)
             VStack(alignment: .leading, spacing: 0) {
-                // Nav row: eye (glass bubble) + CBS SPORTS text + team icons (glass pill)
                 HStack(spacing: 10) {
                     Image("CBSEye")
                         .resizable()
@@ -69,27 +93,9 @@ struct ContentView: View {
                 .frame(height: viewModel.pillsVisible ? 48 : 0, alignment: .top)
                 .clipped()
             }
-            .background(
-                ZStack {
-                    // Team tint color layer — bleeds through the semi-transparent surface
-                    tintColor
-                        .ignoresSafeArea(edges: .top)
-
-                    // Surface color at 92% opacity — lets tint show through at top
-                    LinearGradient(
-                        stops: [
-                            .init(color: (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary).opacity(0.92), location: 0.0),
-                            .init(color: colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary, location: 1.0)
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    .ignoresSafeArea(edges: .top)
-                }
-            )
+            .allowsHitTesting(true)
         }
         .overlay {
-            // Full-screen team screen — slides from right
             if let tile = viewModel.selectedTeamScreen, let screenImage = tile.screenImage {
                 TeamScreenView(imageName: screenImage) {
                     withAnimation(.easeInOut(duration: 0.3)) {
@@ -101,5 +107,4 @@ struct ContentView: View {
             }
         }
     }
-
 }
