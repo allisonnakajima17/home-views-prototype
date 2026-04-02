@@ -1,7 +1,10 @@
 import SwiftUI
 import WebKit
 
-struct WebViewRepresentable: UIViewRepresentable {
+/// Wraps WKWebView in a UIViewControllerRepresentable so we can override
+/// contentScrollView(for:) — this tells the UITabBarController which scroll
+/// view to observe for the liquid glass minimize/restore animation.
+struct WebViewRepresentable: UIViewControllerRepresentable {
     let viewModel: AppViewModel
 
     func makeCoordinator() -> WebViewCoordinator {
@@ -10,7 +13,7 @@ struct WebViewRepresentable: UIViewRepresentable {
         return coordinator
     }
 
-    func makeUIView(context: Context) -> WKWebView {
+    func makeUIViewController(context: Context) -> WebViewController {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
 
@@ -21,9 +24,6 @@ struct WebViewRepresentable: UIViewRepresentable {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
         webView.scrollView.contentInsetAdjustmentBehavior = .never
-        // Don't set scroll view delegate — the system needs it to detect
-        // scroll direction for tab bar minimize/restore.
-        // Track nativeScrollOffset via KVO instead.
         context.coordinator.observeScrollView(webView.scrollView)
         webView.isOpaque = false
         webView.backgroundColor = .clear
@@ -35,10 +35,35 @@ struct WebViewRepresentable: UIViewRepresentable {
             webView.load(URLRequest(url: url))
         }
 
-        return webView
+        let vc = WebViewController()
+        vc.webView = webView
+        return vc
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {
+    func updateUIViewController(_ uiViewController: WebViewController, context: Context) {
         // No updates needed — tab switching is handled via coordinator
+    }
+}
+
+/// A UIViewController that exposes the WKWebView's scroll view via
+/// contentScrollView(for:), enabling the tab bar minimize behavior
+/// to observe real user scroll gestures.
+class WebViewController: UIViewController {
+    var webView: WKWebView!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(webView)
+        NSLayoutConstraint.activate([
+            webView.topAnchor.constraint(equalTo: view.topAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+    }
+
+    override func contentScrollView(for edge: NSDirectionalRectEdge) -> UIScrollView? {
+        return webView?.scrollView
     }
 }
