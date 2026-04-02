@@ -82,7 +82,12 @@ struct ContentView: View {
 
                     Spacer()
 
-                    MenuButtonView()
+                    Image("TeamIcons")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 32)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 6)
                         .glassEffect(.regular, in: .capsule)
                 }
                 .padding(.horizontal, 16)
