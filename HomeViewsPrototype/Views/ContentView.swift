@@ -47,10 +47,16 @@ struct ContentView: View {
                 }
             }
             .safeAreaInset(edge: .top, spacing: 0) {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 0) {
+                    // "CBS Sports" scrolls out of view — offset by scroll position
                     Text("CBS Sports")
                         .font(.custom("TTNormsPro-Bold", size: 22))
                         .padding(.horizontal, 16)
+                        .padding(.bottom, 8)
+                        .offset(y: min(0, -viewModel.nativeScrollOffset))
+                        .opacity(max(0, 1 - viewModel.nativeScrollOffset / 30))
+                        .clipped()
+
                     PillsRowView(viewModel: viewModel)
                 }
             }
