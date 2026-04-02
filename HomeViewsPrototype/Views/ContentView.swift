@@ -65,7 +65,6 @@ struct ContentView: View {
 
                 PillsRowView(viewModel: viewModel)
             }
-            .padding(.top, safeAreaTop)
             .background(
                 ZStack {
                     // Team tint color layer — bleeds through the semi-transparent surface
@@ -99,9 +98,4 @@ struct ContentView: View {
         }
     }
 
-    private var safeAreaTop: CGFloat {
-        UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first?.windows.first?.safeAreaInsets.top ?? 59
-    }
 }
