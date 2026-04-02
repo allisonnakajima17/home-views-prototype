@@ -10,7 +10,7 @@ struct HomeViewsPrototypeApp: App {
             TabView {
                 SwiftUI.Tab("Home", image: "TabHome") {
                     ContentView(viewModel: viewModel)
-                        .background(TabBarHider(isHidden: !viewModel.pillsVisible))
+                        .background(TabBarRestorer(pillsVisible: viewModel.pillsVisible))
                 }
                 SwiftUI.Tab("Scores", image: "TabScores") {
                     Color.clear
@@ -25,16 +25,18 @@ struct HomeViewsPrototypeApp: App {
                     Color.clear
                 }
             }
+            .tabBarMinimizeBehavior(.onScrollDown)
             .environment(\.theme, colorScheme == .dark ? .dark : .light)
             .preferredColorScheme(nil)
         }
     }
 }
 
-/// Finds the hosting UITabBarController and calls setTabBarHidden(_:animated:)
-/// so the tab bar hides/shows in sync with the pills on scroll.
-struct TabBarHider: UIViewRepresentable {
-    let isHidden: Bool
+/// On scroll-up (pillsVisible = true), forces the tab bar to restore via
+/// setTabBarHidden(false). The liquid glass minimize on scroll-down is
+/// handled natively by .tabBarMinimizeBehavior(.onScrollDown).
+struct TabBarRestorer: UIViewRepresentable {
+    let pillsVisible: Bool
 
     func makeUIView(context: Context) -> UIView {
         let view = UIView()
@@ -44,13 +46,13 @@ struct TabBarHider: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIView, context: Context) {
+        // Only act on restore — let the system handle minimize
+        guard pillsVisible else { return }
         DispatchQueue.main.async {
-            guard let tabBarController = uiView.findTabBarController() else {
-                print("[TabBarHider] Could not find UITabBarController")
-                return
+            guard let tabBarController = uiView.findTabBarController() else { return }
+            if tabBarController.isTabBarHidden {
+                tabBarController.setTabBarHidden(false, animated: true)
             }
-            print("[TabBarHider] setTabBarHidden(\(isHidden), animated: true)")
-            tabBarController.setTabBarHidden(isHidden, animated: true)
         }
     }
 }
