@@ -65,7 +65,7 @@ final class AppViewModel {
         // Threshold matches native tab bar minimize timing —
         // low enough to fire in sync with system, with a small
         // buffer to filter scroll noise from the web view
-        let threshold: CGFloat = currentDirection == .up ? 2 : 3
+        let threshold: CGFloat = currentDirection == .up ? 6 : 3
         if accumulated > threshold {
             let shouldShow = currentDirection == .up
             if shouldShow != pillsVisible {
