@@ -63,7 +63,11 @@ struct ContentView: View {
                 .padding(.horizontal, 16)
                 .frame(height: 52)
 
-                PillsRowView(viewModel: viewModel)
+                VStack(spacing: 0) {
+                    PillsRowView(viewModel: viewModel)
+                }
+                .frame(height: viewModel.pillsVisible ? 48 : 0, alignment: .top)
+                .clipped()
             }
             .background(
                 ZStack {
