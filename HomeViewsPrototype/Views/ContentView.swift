@@ -19,7 +19,7 @@ struct ContentView: View {
             if viewModel.selectedTab == .following {
                 VStack(spacing: 0) {
                     TeamTilesRow(viewModel: viewModel)
-                    SAAGCarousel(cardStyle: .subtleStroke)
+                    SAAGCarousel(cardStyle: .subtleFill)
                     GeometryReader { geo in
                         Image("FollowingFeedPlaceholder")
                             .resizable()

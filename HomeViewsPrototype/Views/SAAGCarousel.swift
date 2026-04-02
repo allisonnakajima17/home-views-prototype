@@ -24,7 +24,7 @@ struct SAAGCarousel: View {
     }
 
     private var cardFill: Color {
-        colorScheme == .dark ? Color(hex: 0x2A2A2A) : Color(hex: 0xF5F5F5)
+        colorScheme == .dark ? Color(hex: 0x333333) : Color(hex: 0xF2F2F2)
     }
 
     private var cardStroke: Color {
