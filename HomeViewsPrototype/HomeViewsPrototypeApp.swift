@@ -7,19 +7,19 @@ struct HomeViewsPrototypeApp: App {
     var body: some Scene {
         WindowGroup {
             TabView {
-                Tab("Home", image: "TabHome") {
+                SwiftUI.Tab("Home", image: "TabHome") {
                     ContentView()
                 }
-                Tab("Scores", image: "TabScores") {
+                SwiftUI.Tab("Scores", image: "TabScores") {
                     Color.clear
                 }
-                Tab("Watch", image: "TabWatch") {
+                SwiftUI.Tab("Watch", image: "TabWatch") {
                     Color.clear
                 }
-                Tab("Picks", image: "TabPicks") {
+                SwiftUI.Tab("Picks", image: "TabPicks") {
                     Color.clear
                 }
-                Tab(role: .search) {
+                SwiftUI.Tab(role: .search) {
                     Color.clear
                 }
             }
