@@ -34,8 +34,6 @@ struct ContentView: View {
                     .offset(y: headerHeight - viewModel.nativeScrollOffset)
                 }
             }
-            .navigationTitle("CBS Sports")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Image("CBSEye")
@@ -43,6 +41,10 @@ struct ContentView: View {
                         .renderingMode(.template)
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24)
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("CBS Sports")
+                        .font(.custom("TTNormsPro-Bold", size: 17))
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     MenuButtonView()
