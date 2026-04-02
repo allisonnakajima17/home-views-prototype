@@ -24,9 +24,42 @@ struct HomeViewsPrototypeApp: App {
                     Color.clear
                 }
             }
-            .tabBarMinimizeBehavior(.onScrollDown)
+            .background(TabBarHider(isHidden: !viewModel.pillsVisible))
             .environment(\.theme, colorScheme == .dark ? .dark : .light)
             .preferredColorScheme(nil)
         }
+    }
+}
+
+/// Finds the hosting UITabBarController and calls setTabBarHidden(_:animated:)
+/// so the tab bar hides/shows in sync with the pills on scroll.
+struct TabBarHider: UIViewRepresentable {
+    let isHidden: Bool
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.isHidden = true
+        view.frame = .zero
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        DispatchQueue.main.async {
+            guard let tabBarController = uiView.findTabBarController() else { return }
+            tabBarController.setTabBarHidden(isHidden, animated: true)
+        }
+    }
+}
+
+private extension UIView {
+    func findTabBarController() -> UITabBarController? {
+        var responder: UIResponder? = self
+        while let next = responder?.next {
+            if let tabBarController = next as? UITabBarController {
+                return tabBarController
+            }
+            responder = next
+        }
+        return nil
     }
 }
