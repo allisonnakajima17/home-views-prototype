@@ -35,6 +35,7 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("CBS Sports")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Image("CBSEye")
