@@ -4,63 +4,59 @@ struct ContentView: View {
     @Bindable var viewModel: AppViewModel
     @Environment(\.theme) private var theme
     @Environment(\.colorScheme) private var colorScheme
+
     // Header height: nav (44) + pills (48) + spacing (8) = 100
     private let headerHeight: CGFloat = 100
 
     var body: some View {
-        ZStack(alignment: .top) {
-            (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
-                .ignoresSafeArea()
+        NavigationStack {
+            ZStack(alignment: .top) {
+                (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
+                    .ignoresSafeArea()
 
-            WebViewRepresentable(viewModel: viewModel)
-                .ignoresSafeArea()
+                WebViewRepresentable(viewModel: viewModel)
+                    .ignoresSafeArea()
 
-            // Following tab overlay — tiles + SAAG carousel
-            if viewModel.selectedTab == .following {
-                VStack(spacing: 0) {
-                    TeamTilesRow(viewModel: viewModel)
-                    SAAGCarousel(cardStyle: .subtleFill)
-                    GeometryReader { geo in
-                        Image("FollowingFeedPlaceholder")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: geo.size.width)
-                            .clipped()
+                // Following tab overlay — tiles + SAAG carousel
+                if viewModel.selectedTab == .following {
+                    VStack(spacing: 0) {
+                        TeamTilesRow(viewModel: viewModel)
+                        SAAGCarousel(cardStyle: .subtleFill)
+                        GeometryReader { geo in
+                            Image("FollowingFeedPlaceholder")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: geo.size.width)
+                                .clipped()
+                        }
+                        .allowsHitTesting(false)
                     }
-                    .allowsHitTesting(false)
+                    .offset(y: headerHeight - viewModel.nativeScrollOffset)
                 }
-                .offset(y: headerHeight - viewModel.nativeScrollOffset)
             }
-
-            // Trending tab placeholder feed (temporarily disabled)
-            // if viewModel.selectedTab == .trending {
-            //     GeometryReader { geo in
-            //         let w = geo.size.width
-            //         (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary)
-            //             .ignoresSafeArea()
-            //         Image("TrendingFeedPlaceholder")
-            //             .resizable()
-            //             .scaledToFill()
-            //             .frame(width: w)
-            //             .clipped()
-            //             .offset(y: headerHeight - viewModel.nativeScrollOffset)
-            //     }
-            //     .allowsHitTesting(false)
-            // }
-
-            HeaderView(viewModel: viewModel)
-
-        }
-        .overlay {
-            // Full-screen team screen — slides from right
-            if let tile = viewModel.selectedTeamScreen, let screenImage = tile.screenImage {
-                TeamScreenView(imageName: screenImage) {
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        viewModel.selectedTeamScreen = nil
-                    }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    CBSLogoView(color: colorScheme == .dark ? .white : Color(hex: 0x004ACE))
+                        .frame(width: 120, height: 14)
                 }
-                .ignoresSafeArea()
-                .transition(.move(edge: .trailing))
+                ToolbarItem(placement: .topBarTrailing) {
+                    MenuButtonView()
+                }
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                PillsRowView(viewModel: viewModel)
+            }
+            .overlay {
+                // Full-screen team screen — slides from right
+                if let tile = viewModel.selectedTeamScreen, let screenImage = tile.screenImage {
+                    TeamScreenView(imageName: screenImage) {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            viewModel.selectedTeamScreen = nil
+                        }
+                    }
+                    .ignoresSafeArea()
+                    .transition(.move(edge: .trailing))
+                }
             }
         }
     }
