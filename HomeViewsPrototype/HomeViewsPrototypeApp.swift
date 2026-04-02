@@ -10,6 +10,7 @@ struct HomeViewsPrototypeApp: App {
             TabView {
                 SwiftUI.Tab("Home", image: "TabHome") {
                     ContentView(viewModel: viewModel)
+                        .background(TabBarHider(isHidden: !viewModel.pillsVisible))
                 }
                 SwiftUI.Tab("Scores", image: "TabScores") {
                     Color.clear
@@ -24,7 +25,6 @@ struct HomeViewsPrototypeApp: App {
                     Color.clear
                 }
             }
-            .background(TabBarHider(isHidden: !viewModel.pillsVisible))
             .environment(\.theme, colorScheme == .dark ? .dark : .light)
             .preferredColorScheme(nil)
         }
@@ -45,7 +45,11 @@ struct TabBarHider: UIViewRepresentable {
 
     func updateUIView(_ uiView: UIView, context: Context) {
         DispatchQueue.main.async {
-            guard let tabBarController = uiView.findTabBarController() else { return }
+            guard let tabBarController = uiView.findTabBarController() else {
+                print("[TabBarHider] Could not find UITabBarController")
+                return
+            }
+            print("[TabBarHider] setTabBarHidden(\(isHidden), animated: true)")
             tabBarController.setTabBarHidden(isHidden, animated: true)
         }
     }
