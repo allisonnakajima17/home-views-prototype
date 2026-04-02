@@ -5,6 +5,17 @@ struct HomeViewsPrototypeApp: App {
     @Environment(\.colorScheme) private var colorScheme
     @State private var viewModel = AppViewModel()
 
+    init() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        if let font = UIFont(name: "TTNormsPro-Bold", size: 17) {
+            appearance.titleTextAttributes = [.font: font]
+            appearance.largeTitleTextAttributes = [.font: UIFont(name: "TTNormsPro-Bold", size: 34) ?? font]
+        }
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
+
     var body: some Scene {
         WindowGroup {
             TabView {
