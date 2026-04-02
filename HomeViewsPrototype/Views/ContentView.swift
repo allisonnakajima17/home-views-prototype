@@ -61,14 +61,21 @@ struct ContentView: View {
             }
             .padding(.top, safeAreaTop)
             .background(
-                LinearGradient(
-                    stops: [
-                        .init(color: colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary, location: 0.6),
-                        .init(color: (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary).opacity(0), location: 1.0)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
+                ZStack {
+                    VariableBlurView()
+
+                    (colorScheme == .dark ? Color.black : Color.white)
+                        .opacity(0.3)
+
+                    LinearGradient(
+                        stops: [
+                            .init(color: (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary).opacity(0), location: 0.5),
+                            .init(color: colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary, location: 1.0)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                }
                 .ignoresSafeArea(edges: .top)
             )
         }
