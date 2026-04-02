@@ -218,12 +218,12 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
 
                 // CSS with media queries — auto-adapts to light/dark
                 css.textContent = `
-                    *:not([data-native-card]):not(img):not(video):not(picture):not(svg):not(canvas) {
+                    *:not([data-native-card]):not(img):not(video):not(picture):not(svg):not(canvas):not(html):not(body) {
                         background-color: #ffffff !important;
                         background-image: none !important;
                     }
                     @media (prefers-color-scheme: dark) {
-                        *:not([data-native-card]):not(img):not(video):not(picture):not(svg):not(canvas) {
+                        *:not([data-native-card]):not(img):not(video):not(picture):not(svg):not(canvas):not(html):not(body) {
                             background-color: #212121 !important;
                             background-image: none !important;
                         }
