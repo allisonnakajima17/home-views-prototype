@@ -21,7 +21,10 @@ struct WebViewRepresentable: UIViewRepresentable {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
         webView.scrollView.contentInsetAdjustmentBehavior = .never
-        webView.scrollView.delegate = context.coordinator
+        // Don't set scroll view delegate — the system needs it to detect
+        // scroll direction for tab bar minimize/restore.
+        // Track nativeScrollOffset via KVO instead.
+        context.coordinator.observeScrollView(webView.scrollView)
         webView.isOpaque = false
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = .clear

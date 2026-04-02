@@ -1,12 +1,21 @@
 import WebKit
 
-final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDelegate, UIScrollViewDelegate {
+final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
     private let viewModel: AppViewModel
     private weak var webView: WKWebView?
+    private var scrollObservation: NSKeyValueObservation?
 
     init(viewModel: AppViewModel) {
         self.viewModel = viewModel
         super.init()
+    }
+
+    func observeScrollView(_ scrollView: UIScrollView) {
+        scrollObservation = scrollView.observe(\.contentOffset, options: [.new]) { [weak self] scrollView, _ in
+            Task { @MainActor in
+                self?.viewModel.nativeScrollOffset = scrollView.contentOffset.y
+            }
+        }
     }
 
     func setWebView(_ webView: WKWebView) {
@@ -59,14 +68,6 @@ final class WebViewCoordinator: NSObject, WKScriptMessageHandler, WKNavigationDe
 
         Task { @MainActor in
             viewModel.handleScrollUpdate(offset: offset)
-        }
-    }
-
-    // MARK: - UIScrollViewDelegate
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        Task { @MainActor in
-            viewModel.nativeScrollOffset = scrollView.contentOffset.y
         }
     }
 
