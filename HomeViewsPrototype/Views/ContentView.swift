@@ -5,8 +5,12 @@ struct ContentView: View {
     @Environment(\.theme) private var theme
     @Environment(\.colorScheme) private var colorScheme
 
-    // Header height: nav row (44) + text (30) + pills (48) + spacing
-    private let headerHeight: CGFloat = 140
+    // Header height: nav row (52) + pills (48) + spacing
+    private let headerHeight: CGFloat = 120
+
+    private var tintColor: Color {
+        viewModel.selectedTab.tintColor ?? Color(hex: 0x004ACE)
+    }
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -35,18 +39,20 @@ struct ContentView: View {
 
             // Header
             VStack(alignment: .leading, spacing: 0) {
-                // Nav row: eye icon (glass bubble) + CBS Sports text + menu button
+                // Nav row: eye (glass bubble) + CBS SPORTS text + team icons (glass pill)
                 HStack(spacing: 10) {
                     Image("CBSEye")
                         .resizable()
                         .renderingMode(.template)
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .padding(8)
+                        .frame(width: 23, height: 23)
+                        .padding(10)
                         .glassEffect(.regular, in: .circle)
 
-                    Text("CBS Sports")
-                        .font(.custom("TTNormsPro-Bold", size: 20))
+                    Text("CBS SPORTS")
+                        .font(.custom("TTNormsPro-Bold", size: 23))
+                        .tracking(-0.46)
+                        .blendMode(.plusLighter)
                         .offset(y: min(0, -viewModel.nativeScrollOffset))
                         .opacity(max(0, 1 - viewModel.nativeScrollOffset / 30))
 
@@ -62,21 +68,21 @@ struct ContentView: View {
             .padding(.top, safeAreaTop)
             .background(
                 ZStack {
-                    VariableBlurView()
+                    // Team tint color layer — bleeds through the semi-transparent surface
+                    tintColor
+                        .ignoresSafeArea(edges: .top)
 
-                    (colorScheme == .dark ? Color.black : Color.white)
-                        .opacity(0.3)
-
+                    // Surface color at 92% opacity — lets tint show through at top
                     LinearGradient(
                         stops: [
-                            .init(color: (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary).opacity(0), location: 0.5),
+                            .init(color: (colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary).opacity(0.92), location: 0.0),
                             .init(color: colorScheme == .dark ? Color(hex: 0x212121) : theme.surfacePrimary, location: 1.0)
                         ],
                         startPoint: .top,
                         endPoint: .bottom
                     )
+                    .ignoresSafeArea(edges: .top)
                 }
-                .ignoresSafeArea(edges: .top)
             )
         }
         .overlay {
