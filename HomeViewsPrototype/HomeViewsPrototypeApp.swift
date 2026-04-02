@@ -3,12 +3,13 @@ import SwiftUI
 @main
 struct HomeViewsPrototypeApp: App {
     @Environment(\.colorScheme) private var colorScheme
+    @State private var viewModel = AppViewModel()
 
     var body: some Scene {
         WindowGroup {
             TabView {
                 SwiftUI.Tab("Home", image: "TabHome") {
-                    ContentView()
+                    ContentView(viewModel: viewModel)
                 }
                 SwiftUI.Tab("Scores", image: "TabScores") {
                     Color.clear
@@ -23,7 +24,7 @@ struct HomeViewsPrototypeApp: App {
                     Color.clear
                 }
             }
-            .tabBarMinimizeBehavior(.onScrollDown)
+            .toolbarVisibility(viewModel.pillsVisible ? .visible : .hidden, for: .tabBar)
             .environment(\.theme, colorScheme == .dark ? .dark : .light)
             .preferredColorScheme(nil)
         }

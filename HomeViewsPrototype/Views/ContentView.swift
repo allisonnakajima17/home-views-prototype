@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var viewModel = AppViewModel()
+    @Bindable var viewModel: AppViewModel
     @Environment(\.theme) private var theme
     @Environment(\.colorScheme) private var colorScheme
 
