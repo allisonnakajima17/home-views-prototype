@@ -34,10 +34,14 @@ struct ContentView: View {
                     .offset(y: headerHeight - viewModel.nativeScrollOffset)
                 }
             }
+            .navigationTitle("CBS Sports")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    CBSLogoView(color: colorScheme == .dark ? .white : Color(hex: 0x004ACE))
-                        .frame(width: 120, height: 14)
+                    Image("CBSEye")
+                        .resizable()
+                        .renderingMode(.template)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 28, height: 28)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     MenuButtonView()
