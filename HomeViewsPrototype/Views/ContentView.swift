@@ -36,15 +36,15 @@ struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    HStack(spacing: 8) {
+                    HStack(spacing: 6) {
                         Image("CBSEye")
                             .resizable()
                             .renderingMode(.template)
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 28, height: 28)
+                            .frame(width: 22, height: 22)
                         Text("CBS Sports")
-                            .font(.headline)
-                            .fontWeight(.bold)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
