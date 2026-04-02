@@ -15,7 +15,6 @@ struct HeaderView: View {
                 Spacer().frame(height: 8)
             }
         }
-        .opacity(viewModel.pillsVisible ? 1 : 0)
         .background(
             ZStack {
                 // Blur layer
@@ -51,6 +50,7 @@ struct HeaderView: View {
             }
             .ignoresSafeArea(edges: .top)
         )
+        .opacity(viewModel.pillsVisible ? 1 : 0)
     }
 }
 
