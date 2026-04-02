@@ -9,7 +9,7 @@ struct HeaderView: View {
         VStack(spacing: 0) {
             NavBarView()
 
-            // Pills — animate height, no own background
+            // Pills — slide out horizontally with stagger, matching tab bar motion
             VStack(spacing: 0) {
                 PillsRowView(viewModel: viewModel)
                     .frame(height: 48)
@@ -17,6 +17,9 @@ struct HeaderView: View {
             }
             .frame(height: viewModel.pillsVisible ? 56 : 0, alignment: .top)
             .clipped()
+            .offset(x: viewModel.pillsVisible ? 0 : -60)
+            .opacity(viewModel.pillsVisible ? 1 : 0)
+            .scaleEffect(viewModel.pillsVisible ? 1 : 0.92, anchor: .leading)
 
         }
         .background(

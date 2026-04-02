@@ -7,7 +7,7 @@ struct PillsRowView: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(Tab.allCases) { tab in
+            ForEach(Array(Tab.allCases.enumerated()), id: \.element) { index, tab in
                 PillButton(
                     label: tab.label,
                     icon: tab == .following ? "FavStar" : nil,
@@ -17,6 +17,14 @@ struct PillsRowView: View {
                 ) {
                     viewModel.selectTab(tab)
                 }
+                .offset(x: viewModel.pillsVisible ? 0 : CGFloat(-20 * (index + 1)))
+                .opacity(viewModel.pillsVisible ? 1 : 0)
+                .scaleEffect(viewModel.pillsVisible ? 1 : 0.88, anchor: .leading)
+                .animation(
+                    .spring(response: 0.35, dampingFraction: 0.82)
+                        .delay(viewModel.pillsVisible ? Double(index) * 0.04 : Double(Tab.allCases.count - 1 - index) * 0.03),
+                    value: viewModel.pillsVisible
+                )
             }
             Spacer()
         }
