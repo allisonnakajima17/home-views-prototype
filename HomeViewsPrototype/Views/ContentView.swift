@@ -34,18 +34,14 @@ struct ContentView: View {
                     .offset(y: headerHeight - viewModel.nativeScrollOffset)
                 }
             }
+            .navigationTitle("CBS Sports")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    HStack(spacing: 6) {
-                        Image("CBSEye")
-                            .resizable()
-                            .renderingMode(.template)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 22, height: 22)
-                        Text("CBS Sports")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                    }
+                    Image("CBSEye")
+                        .resizable()
+                        .renderingMode(.template)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     MenuButtonView()
