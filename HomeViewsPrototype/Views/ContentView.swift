@@ -42,16 +42,17 @@ struct ContentView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24)
                 }
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("CBS Sports")
-                        .font(.custom("TTNormsPro-Bold", size: 17))
-                }
                 ToolbarItem(placement: .topBarTrailing) {
                     MenuButtonView()
                 }
             }
             .safeAreaInset(edge: .top, spacing: 0) {
-                PillsRowView(viewModel: viewModel)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("CBS Sports")
+                        .font(.custom("TTNormsPro-Bold", size: 22))
+                        .padding(.horizontal, 16)
+                    PillsRowView(viewModel: viewModel)
+                }
             }
             .overlay {
                 // Full-screen team screen — slides from right
