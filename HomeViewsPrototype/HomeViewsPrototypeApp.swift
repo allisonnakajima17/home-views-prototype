@@ -24,6 +24,7 @@ struct HomeViewsPrototypeApp: App {
                     Color.clear
                 }
             }
+            .tabBarMinimizeBehavior(.onScrollDown)
             .toolbarVisibility(viewModel.pillsVisible ? .visible : .hidden, for: .tabBar)
             .environment(\.theme, colorScheme == .dark ? .dark : .light)
             .preferredColorScheme(nil)
