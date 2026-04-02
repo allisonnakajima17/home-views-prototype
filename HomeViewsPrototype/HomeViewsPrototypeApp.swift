@@ -24,7 +24,7 @@ struct HomeViewsPrototypeApp: App {
                     Color.clear
                 }
             }
-            .tabBarMinimizeBehavior(.onScrollDown)
+            .tabBarMinimizeBehavior(.automatic)
             .environment(\.theme, colorScheme == .dark ? .dark : .light)
             .preferredColorScheme(nil)
         }
